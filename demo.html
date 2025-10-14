@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Demo - MashouraX</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .demo-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            padding: 120px 20px 60px;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .demo-badge {
+            display: inline-block;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .demo-header h1 {
+            font-size: 48px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .demo-header p {
+            font-size: 18px;
+            color: #b0b0b0;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 60px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .demo-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .demo-feature {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            padding: 30px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-feature:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #DAA520;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(218, 165, 32, 0.15);
+        }
+
+        .demo-feature-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .demo-feature h3 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .demo-feature p {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .section-divider {
+            margin: 80px 0;
+            text-align: center;
+        }
+
+        .section-divider h2 {
+            color: #ffffff;
+            font-size: 36px;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .section-divider p {
+            color: #aaa;
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .demo-cta {
+            text-align: center;
+            margin-top: 60px;
+            padding: 60px 20px;
+            background: rgba(255, 193, 7, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .demo-cta h2 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .demo-cta p {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn, .secondary-btn {
+            padding: 14px 32px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border: none;
+        }
+
+        .primary-btn {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .primary-btn:hover {
+            background: #ffca28;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .secondary-btn:hover {
+            border-color: #ffc107;
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .demo-header h1 {
+                font-size: 32px;
+            }
+
+            .demo-features {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-cta h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="top-bar-item">
+                <span>📧</span> support@mashourax.com
+            </div>
+            <div class="top-bar-item">
+                <span>📞</span> +1 (555) 123-4567
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <a href="#" class="top-bar-link">About</a>
+            <a href="#" class="top-bar-link">Blog</a>
+            <a href="#" class="top-bar-link">Careers</a>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav>
+        <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">MashouraX</div>
+        <ul class="nav-center">
+            <li class="nav-item">
+                <a href="#resources">Resources ▾</a>
+                <div class="dropdown">
+                    <a href="#">Case Studies</a>
+                    <a href="#">Documentation</a>
+                    <a href="#">Webinars</a>
+                    <a href="#">Help Center</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#pricing">Pricing</a>
+            </li>
+            <li class="nav-item">
+                <a href="#security">Security</a>
+            </li>
+        </ul>
+        <div class="nav-right">
+            <button class="search-btn">🔍 Search</button>
+            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+            <button class="demo-btn">Request Demo</button>
+        </div>
+    </nav>
+
+    <!-- Demo Page Content -->
+    <section class="demo-page" style="display: block !important; visibility: visible !important;">
+        <div class="demo-container" style="display: block !important; visibility: visible !important;">
+            <div class="demo-header">
+                <div class="demo-badge">
+                    ▶ Product Demo
+                </div>
+                <h1>See MashouraX in Action</h1>
+                <p>Discover how our AI-powered virtual advising platform transforms student success. Watch this comprehensive demo to see all features in action.</p>
+            </div>
+
+            <div class="video-wrapper">
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                        title="MashouraX Demo Video" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- What You'll See Section -->
+            <div style="text-align: center; margin-bottom: 40px; margin-top: 60px;">
+                <h2 style="color: #ffffff; font-size: 32px; margin-bottom: 15px; font-weight: 700;">What You'll See in This Demo</h2>
+                <p style="color: #aaa; font-size: 16px;">Explore the key features that make MashouraX the leading virtual advising platform</p>
+            </div>
+
+            <div class="demo-features" style="display: grid !important; visibility: visible !important;">
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🤖</div>
+                    <h3>AI-Powered Conversations</h3>
+                    <p>See how our intelligent chatbot handles complex student queries with natural, personalized responses drawn from 850+ vetted questions.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Explore our comprehensive analytics that help you track engagement, identify at-risk students, and measure success metrics in real-time.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🎯</div>
+                    <h3>Personalized Journeys</h3>
+                    <p>Watch how we create tailored academic pathways for each student, from enrollment through degree completion.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🔄</div>
+                    <h3>Seamless Integration</h3>
+                    <p>Learn how MashouraX integrates with your existing SIS, LMS, and other campus systems for a unified experience.</p>
+                </div>
+            </div>
+
+            <div class="demo-features">
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">⚡</div>
+                    <h3>Lightning Fast Setup</h3>
+                    <p>Get started in minutes with our streamlined onboarding process. No complex configurations or technical expertise required.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🎓</div>
+                    <h3>Academic Advisor Support</h3>
+                    <p>Augment your human advisors with AI that handles routine questions, freeing them to focus on complex student needs.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">📈</div>
+                    <h3>ROI Tracking</h3>
+                    <p>Measure the impact with detailed metrics showing increased enrollment, retention rates, and student satisfaction scores.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🌍</div>
+                    <h3>Multi-Language Support</h3>
+                    <p>Serve diverse student populations with support for multiple languages, ensuring no student is left behind.</p>
+                </div>
+            </div>
+
+            <!-- Key Benefits Section -->
+            <div style="margin-top: 80px; text-align: center;">
+                <div class="demo-badge">
+                    💎 Key Benefits
+                </div>
+                <h2 style="color: #ffffff; font-size: 36px; margin: 20px 0;">Why Institutions Choose MashouraX</h2>
+                <p style="color: #b0b0b0; font-size: 18px; max-width: 700px; margin: 0 auto 50px;">Transform your institution with proven results and measurable outcomes.</p>
+            </div>
+
+            <div class="demo-features" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">⏱️</div>
+                    <h3>Save 40+ Hours/Week</h3>
+                    <p>Reduce administrative burden on staff by automating repetitive student inquiries and routine advising tasks.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">💰</div>
+                    <h3>Increase Revenue</h3>
+                    <p>Boost enrollment and retention rates by providing instant, personalized support that keeps students engaged.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">😊</div>
+                    <h3>Improve Satisfaction</h3>
+                    <p>98% student satisfaction rate with instant responses and 24/7 availability for all their questions.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">📉</div>
+                    <h3>Reduce Drop-out Rates</h3>
+                    <p>Identify at-risk students early and provide proactive interventions to keep them on track to graduation.</p>
+                </div>
+            </div>
+
+            <!-- Integration Section -->
+            <div style="margin-top: 80px; padding: 60px 30px; background: rgba(255, 193, 7, 0.05); border-radius: 16px; border: 1px solid rgba(255, 193, 7, 0.2);">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <div class="demo-badge">
+                        🔗 Integrations
+                    </div>
+                    <h2 style="color: #ffffff; font-size: 32px; margin: 20px 0;">Works With Your Existing Systems</h2>
+                    <p style="color: #b0b0b0; font-size: 16px;">Seamlessly connect with the tools you already use</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto;">
+                    <div style="background: rgba(0,0,0,0.3); padding: 30px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 40px; margin-bottom: 10px;">🎓</div>
+                        <h4 style="color: #fff; margin: 0;">Student Information Systems</h4>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 30px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 40px; margin-bottom: 10px;">📚</div>
+                        <h4 style="color: #fff; margin: 0;">Learning Management Systems</h4>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 30px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 40px; margin-bottom: 10px;">💳</div>
+                        <h4 style="color: #fff; margin: 0;">Payment Platforms</h4>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 30px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 40px; margin-bottom: 10px;">📧</div>
+                        <h4 style="color: #fff; margin: 0;">Email & Communication Tools</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial Section -->
+            <div style="margin-top: 80px;">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <div class="demo-badge">
+                        💬 What Our Clients Say
+                    </div>
+                    <h2 style="color: #ffffff; font-size: 36px; margin: 20px 0;">Trusted by Leading Institutions</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 12px;">
+                        <div style="color: #ffc107; font-size: 24px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
+                        <p style="color: #e0e0e0; font-style: italic; line-height: 1.6; margin-bottom: 20px;">"MashouraX has transformed how we support our students. Response times dropped from hours to seconds, and our retention rates improved by 23%."</p>
+                        <div style="color: #ffc107; font-weight: 600;">Dr. Sarah Johnson</div>
+                        <div style="color: #888; font-size: 14px;">Dean of Student Affairs, State University</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 12px;">
+                        <div style="color: #ffc107; font-size: 24px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
+                        <p style="color: #e0e0e0; font-style: italic; line-height: 1.6; margin-bottom: 20px;">"The AI is incredibly accurate and has freed up our advisors to handle more complex cases. Students love the instant support available 24/7."</p>
+                        <div style="color: #ffc107; font-weight: 600;">Michael Chen</div>
+                        <div style="color: #888; font-size: 14px;">Director of Academic Advising, Tech Institute</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 12px;">
+                        <div style="color: #ffc107; font-size: 24px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
+                        <p style="color: #e0e0e0; font-style: italic; line-height: 1.6; margin-bottom: 20px;">"Implementation was smooth and the ROI was evident within the first semester. Our student satisfaction scores reached an all-time high."</p>
+                        <div style="color: #ffc107; font-weight: 600;">Lisa Rodriguez</div>
+                        <div style="color: #888; font-size: 14px;">VP of Student Success, Community College</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div style="margin-top: 80px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <div class="demo-badge">
+                        ❓ Frequently Asked Questions
+                    </div>
+                    <h2 style="color: #ffffff; font-size: 36px; margin: 20px 0;">Got Questions? We Have Answers</h2>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 12px;">
+                        <h3 style="color: #ffc107; margin-bottom: 10px; font-size: 18px;">How long does implementation take?</h3>
+                        <p style="color: #b0b0b0; line-height: 1.6;">Most institutions are up and running within 2-3 weeks. Our team handles the technical setup while you focus on customizing responses for your specific needs.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 12px;">
+                        <h3 style="color: #ffc107; margin-bottom: 10px; font-size: 18px;">Is training required for our staff?</h3>
+                        <p style="color: #b0b0b0; line-height: 1.6;">We provide comprehensive training and ongoing support. Most staff members become proficient with the platform within a few hours of hands-on use.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 12px;">
+                        <h3 style="color: #ffc107; margin-bottom: 10px; font-size: 18px;">How secure is student data?</h3>
+                        <p style="color: #b0b0b0; line-height: 1.6;">We're FERPA compliant and SOC 2 Type II certified. All data is encrypted end-to-end, and we never share or sell student information.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 12px;">
+                        <h3 style="color: #ffc107; margin-bottom: 10px; font-size: 18px;">Can we customize the AI responses?</h3>
+                        <p style="color: #b0b0b0; line-height: 1.6;">Absolutely! You have full control over response templates, tone, and content. The AI learns from your institution's specific policies and procedures.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="demo-cta">
+                <h2>Ready to Get Started?</h2>
+                <p>Start your free trial today and experience the power of AI-driven student success.</p>
+                <div class="demo-buttons">
+                    <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
+                    <button class="secondary-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>MashouraX</h3>
+                <p>Empowering institutions with AI-powered virtual advising to transform student success and drive better outcomes.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">𝕏</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">▶</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Virtual Advising</a></li>
+                    <li><a href="#">Student Success</a></li>
+                    <li><a href="#">Academic Planning</a></li>
+                    <li><a href="#">Career Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Case Studies</a></li>
+                    <li><a href="#">Webinars</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MashouraX. All rights reserved. Built with excellence for student success.</p>
+        </div>
+    </footer>
+</body>
+</html>
