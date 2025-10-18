@@ -110,6 +110,21 @@ nav {
     letter-spacing: -1px;
 }
 
+.logo a {
+    background: linear-gradient(135deg, #DAA520, #FFD700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.logo a:hover {
+    opacity: 0.8;
+}
+
+
 .nav-center {
     display: flex;
     gap: 3rem;
