@@ -1,0 +1,145 @@
+<!-- Cookie Consent Banner - Include this in all pages -->
+<!-- Floating Cookie Icon -->
+<div id="cookieIcon" class="cookie-float-icon" onclick="openCookieSettings()">
+    🍪
+</div>
+
+<!-- Cookie Consent Modal -->
+<div id="cookieModal" class="cookie-modal">
+    <div class="cookie-modal-content">
+        <button class="cookie-close" onclick="closeCookieModal()">✕</button>
+        
+        <div class="cookie-header">
+            <h2>Privacy Preferences</h2>
+            <p>We use cookies to enhance your experience on MashouraX</p>
+        </div>
+
+        <div class="cookie-body">
+            <div class="cookie-option">
+                <div class="cookie-option-header">
+                    <div>
+                        <h3>Essential cookies</h3>
+                        <p>Required for the website to function properly</p>
+                    </div>
+                    <span class="cookie-required">Required</span>
+                </div>
+            </div>
+
+            <div class="cookie-option">
+                <div class="cookie-option-header">
+                    <div>
+                        <h3>Marketing cookies</h3>
+                        <p>Help us show you relevant advertisements</p>
+                    </div>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" id="marketingCookies">
+                        <span class="cookie-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="cookie-option">
+                <div class="cookie-option-header">
+                    <div>
+                        <h3>Personalization cookies</h3>
+                        <p>Remember your preferences and settings</p>
+                    </div>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" id="personalizationCookies">
+                        <span class="cookie-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="cookie-option">
+                <div class="cookie-option-header">
+                    <div>
+                        <h3>Analytics cookies</h3>
+                        <p>Help us understand how visitors use our site</p>
+                    </div>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" id="analyticsCookies">
+                        <span class="cookie-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="cookie-actions">
+            <button class="cookie-btn cookie-btn-outline" onclick="rejectAllCookies()">Reject all cookies</button>
+            <button class="cookie-btn cookie-btn-secondary" onclick="savePreferences()">Save preferences</button>
+            <button class="cookie-btn cookie-btn-primary" onclick="allowAllCookies()">Allow all cookies</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Check if user has already made cookie choice
+    function checkCookieConsent() {
+        const consent = localStorage.getItem('cookieConsent');
+        if (!consent) {
+            // Show modal on first visit
+            setTimeout(() => {
+                document.getElementById('cookieModal').style.display = 'flex';
+            }, 1000);
+        }
+    }
+
+    function openCookieSettings() {
+        document.getElementById('cookieModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Load saved preferences
+        const preferences = JSON.parse(localStorage.getItem('cookiePreferences') || '{}');
+        document.getElementById('marketingCookies').checked = preferences.marketing || false;
+        document.getElementById('personalizationCookies').checked = preferences.personalization || false;
+        document.getElementById('analyticsCookies').checked = preferences.analytics || false;
+    }
+
+    function closeCookieModal() {
+        document.getElementById('cookieModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function allowAllCookies() {
+        const preferences = {
+            essential: true,
+            marketing: true,
+            personalization: true,
+            analytics: true
+        };
+        localStorage.setItem('cookieConsent', 'all');
+        localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+        closeCookieModal();
+        alert('All cookies have been enabled.');
+    }
+
+    function rejectAllCookies() {
+        const preferences = {
+            essential: true,
+            marketing: false,
+            personalization: false,
+            analytics: false
+        };
+        localStorage.setItem('cookieConsent', 'essential');
+        localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+        closeCookieModal();
+        alert('Only essential cookies are enabled.');
+    }
+
+    function savePreferences() {
+        const preferences = {
+            essential: true,
+            marketing: document.getElementById('marketingCookies').checked,
+            personalization: document.getElementById('personalizationCookies').checked,
+            analytics: document.getElementById('analyticsCookies').checked
+        };
+        localStorage.setItem('cookieConsent', 'custom');
+        localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+        closeCookieModal();
+        alert('Your cookie preferences have been saved.');
+    }
+
+    // Run on page load
+    window.addEventListener('DOMContentLoaded', checkCookieConsent);
+</script>

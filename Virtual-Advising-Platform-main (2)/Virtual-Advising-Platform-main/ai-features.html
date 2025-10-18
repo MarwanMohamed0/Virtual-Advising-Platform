@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Features - MashouraX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 193, 7, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 193, 7, 0.15) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffc107;
+            text-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: #0a0a0a;
+            padding: 0.7rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 193, 7, 0.1);
+        }
+
+        .top-bar-left {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .top-bar-item {
+            color: #b0b0b0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .top-bar-link {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .top-bar-link:hover {
+            color: #ffc107;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item > a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-item > a:hover {
+            color: #ffc107;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 10, 10, 0.98);
+            min-width: 200px;
+            padding: 1rem 0;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            margin-top: 0.5rem;
+        }
+
+        .nav-item:hover .dropdown {
+            display: block;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.7rem 1.5rem;
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .dropdown a:hover {
+            color: #ffc107;
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #b0b0b0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .demo-btn {
+            background: #ffc107;
+            border: none;
+            color: #0a0a0a;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 6rem 5% 4rem;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffc107 0%, #ffeb3b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        /* AI Capabilities Grid */
+        .ai-grid {
+            position: relative;
+            padding: 4rem 5%;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffc107;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .capability-card {
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .capability-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 193, 7, 0.6);
+            box-shadow: 0 20px 60px rgba(255, 193, 7, 0.2);
+        }
+
+        .capability-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .capability-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffc107;
+        }
+
+        .capability-card p {
+            color: #c0c0c0;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .capability-features {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .capability-features li {
+            padding: 0.5rem 0;
+            color: #b0b0b0;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .capability-features li:before {
+            content: "✓";
+            color: #ffc107;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* ML Pipeline Section */
+        .ml-pipeline {
+            position: relative;
+            padding: 4rem 5%;
+            background: rgba(10, 10, 10, 0.4);
+            z-index: 1;
+        }
+
+        .pipeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pipeline-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pipeline-step {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: #ffc107;
+            color: #0a0a0a;
+            border-radius: 50%;
+            line-height: 50px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .pipeline-step h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: #ffc107;
+        }
+
+        .pipeline-step p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .ai-stats {
+            position: relative;
+            padding: 4rem 5%;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: #b0b0b0;
+            font-size: 1rem;
+        }
+
+        /* Technology Stack */
+        .tech-stack {
+            position: relative;
+            padding: 4rem 5%;
+            background: rgba(10, 10, 10, 0.4);
+            z-index: 1;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 3rem auto;
+        }
+
+        .tech-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            border-color: #ffc107;
+            transform: translateY(-5px);
+        }
+
+        .tech-item h4 {
+            color: #ffc107;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            position: relative;
+            padding: 5rem 5%;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn {
+            padding: 1rem 2.5rem;
+            background: #ffc107;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.4);
+        }
+
+        .secondary-btn {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: #ffc107;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255, 193, 7, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Demo Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            margin: 5% auto;
+            padding: 0;
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(255, 193, 7, 0.2);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            padding: 2rem;
+            border-radius: 18px 18px 0 0;
+            text-align: center;
+        }
+
+        .modal-header h2 {
+            color: #0a0a0a;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            color: rgba(10, 10, 10, 0.8);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            color: #0a0a0a;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+            background: rgba(10, 10, 10, 0.1);
+        }
+
+        .close:hover {
+            background: rgba(10, 10, 10, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ffc107;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            border-radius: 8px;
+            color: #000000;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffc107;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #ffc107;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            background: rgba(10, 10, 10, 0.9);
+            padding: 3rem 5%;
+            border-top: 1px solid rgba(255, 193, 7, 0.2);
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand h3 {
+            color: #ffc107;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            color: #ffc107;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: #ffc107;
+            color: #0a0a0a;
+        }
+
+        .footer-col h4 {
+            color: #ffc107;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ffc107;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 193, 7, 0.1);
+            color: #808080;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .nav-center {
+                display: none;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="top-bar-item">
+                <span>📧</span> support@mashourax.com
+            </div>
+            <div class="top-bar-item">
+                <span>📞</span> +1 (555) 123-4567
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <a href="#" class="top-bar-link">About</a>
+            <a href="#" class="top-bar-link">Blog</a>
+            <a href="#" class="top-bar-link">Careers</a>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">MashouraX</div>
+        <ul class="nav-center">
+            <li class="nav-item">
+                <a href="#solutions">Solutions ▾</a>
+                <div class="dropdown">
+                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
+                    <a href="solutions-student-success.html">Student Success</a>
+                    <a href="solutions-academic-planning.html">Academic Planning</a>
+                    <a href="solutions-career-services.html">Career Services</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#features">Features ▾</a>
+                <div class="dropdown">
+                    <a href="#">AI-Powered Support</a>
+                    <a href="#">Analytics Dashboard</a>
+                    <a href="#">24/7 Chat Support</a>
+                    <a href="#">Mobile App</a>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#resources">Resources ▾</a>
+                <div class="dropdown">
+                    <a href="#">Case Studies</a>
+                    <a href="#">Documentation</a>
+                    <a href="#">Webinars</a>
+                    <a href="#">Help Center</a>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#pricing">Pricing</a>
+            </li>
+            <li class="nav-item">
+                <a href="#security">Security</a>
+            </li>
+        </ul>
+        <div class="nav-right">
+            <button class="search-btn">🔍 Search</button>
+            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+            <button class="demo-btn" onclick="window.location.href='index.html'">Back to Home</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>🤖 AI-Powered Intelligence</h1>
+        <p>Experience next-generation virtual advising powered by advanced machine learning, natural language processing, and predictive analytics. Our AI doesn't just answer questions—it understands student needs, anticipates challenges, and delivers personalized guidance at scale.</p>
+    </section>
+
+    <!-- AI Capabilities -->
+    <section class="ai-grid" id="capabilities">
+        <h2 class="section-title">Core AI Capabilities</h2>
+        <p class="section-subtitle">Discover how our advanced AI transforms student support through intelligent automation and personalized engagement</p>
+        
+        <div class="capabilities-grid">
+            <div class="capability-card">
+                <span class="capability-icon">🧠</span>
+                <h3>Natural Language Understanding</h3>
+                <p>Our AI comprehends student queries with human-like understanding, processing context, intent, and sentiment to deliver accurate, empathetic responses.</p>
+                <ul class="capability-features">
+                    <li>Multi-language support</li>
+                    <li>Context-aware conversations</li>
+                    <li>Sentiment analysis</li>
+                    <li>Intent classification</li>
+                </ul>
+            </div>
+
+            <div class="capability-card">
+                <span class="capability-icon">🎯</span>
+                <h3>Predictive Analytics</h3>
+                <p>Identify at-risk students before they fall behind using machine learning models that analyze engagement patterns, academic performance, and behavioral indicators.</p>
+                <ul class="capability-features">
+                    <li>Early warning systems</li>
+                    <li>Retention prediction</li>
+                    <li>Success probability scoring</li>
+                    <li>Intervention recommendations</li>
+                </ul>
+            </div>
+
+            <div class="capability-card">
+                <span class="capability-icon">💡</span>
+                <h3>Personalized Recommendations</h3>
+                <p>Deliver tailored course suggestions, degree path guidance, and resource recommendations based on individual student profiles and goals.</p>
+                <ul class="capability-features">
+                    <li>Smart course matching</li>
+                    <li>Career pathway mapping</li>
+                    <li>Learning style adaptation</li>
+                    <li>Dynamic content delivery</li>
+                </ul>
+            </div>
+
+            <div class="capability-card">
+                <span class="capability-icon">📚</span>
+                <h3>Knowledge Base Intelligence</h3>
+                <p>Access 850+ vetted questions with continuously improving responses that stay current with regulatory changes and institutional policies.</p>
+                <ul class="capability-features">
+                    <li>Auto-updating knowledge</li>
+                    <li>Policy compliance tracking</li>
+                    <li>Multi-source integration</li>
+                    <li>Answer quality scoring</li>
+                </ul>
+            </div>
+
+            <div class="capability-card">
+                <span class="capability-icon">⚡</span>
+                <h3>Real-Time Learning</h3>
+                <p>Our AI continuously learns from every interaction, improving accuracy and effectiveness with each student conversation.</p>
+                <ul class="capability-features">
+                    <li>Adaptive learning algorithms</li>
+                    <li>Feedback loop optimization</li>
+                    <li>Performance monitoring</li>
+                    <li>Self-improving models</li>
+                </ul>
+            </div>
+
+            <div class="capability-card">
+                <span class="capability-icon">🔄</span>
+                <h3>Proactive Engagement</h3>
+                <p>Don't wait for students to ask—our AI initiates timely outreach based on triggers, milestones, and predictive indicators.</p>
+                <ul class="capability-features">
+                    <li>Automated check-ins</li>
+                    <li>Milestone reminders</li>
+                    <li>Deadline notifications</li>
+                    <li>Smart campaign triggers</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Machine Learning Pipeline -->
+    <section class="ml-pipeline" id="pipeline">
+        <div class="pipeline-container">
+            <h2 class="section-title">How Our AI Works</h2>
+            <p class="section-subtitle">A sophisticated machine learning pipeline that transforms raw data into actionable student support</p>
+            
+            <div class="pipeline-steps">
+                <div class="pipeline-step">
+                    <div class="step-number">1</div>
+                    <h4>Data Collection</h4>
+                    <p>Aggregate student interactions, academic records, engagement metrics, and institutional data from multiple sources</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">2</div>
+                    <h4>Processing & Analysis</h4>
+                    <p>Clean, normalize, and analyze data using advanced NLP and statistical models to extract meaningful patterns</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">3</div>
+                    <h4>Model Training</h4>
+                    <p>Train neural networks and ML algorithms on institutional data to understand unique student needs and behaviors</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">4</div>
+                    <h4>Intelligent Response</h4>
+                    <p>Generate contextual, personalized responses and recommendations in real-time with human-like understanding</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">5</div>
+                    <h4>Continuous Learning</h4>
+                    <p>Capture feedback, measure outcomes, and refine models to improve accuracy and effectiveness over time</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Stats -->
+    <section class="ai-stats">
+        <h2 class="section-title">AI Performance Metrics</h2>
+        <p class="section-subtitle">Real results from institutions using MashouraX AI technology</p>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>97%</h3>
+                <p>Answer Accuracy</p>
+            </div>
+            <div class="stat-item">
+                <h3>850+</h3>
+                <p>Vetted Questions</p>
+            </div>
+            <div class="stat-item">
+                <h3>< 2s</h3>
+                <p>Response Time</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Availability</p>
+            </div>
+            <div class="stat-item">
+                <h3>45%</h3>
+                <p>Reduced Advisor Workload</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="tech-stack" id="technology">
+        <h2 class="section-title">Powered by Advanced Technology</h2>
+        <p class="section-subtitle">Built on industry-leading AI and machine learning frameworks</p>
+        
+        <div class="tech-grid">
+            <div class="tech-item">
+                <h4>Deep Learning</h4>
+                <p>Neural networks for complex pattern recognition</p>
+            </div>
+            <div class="tech-item">
+                <h4>NLP</h4>
+                <p>Natural language processing engines</p>
+            </div>
+            <div class="tech-item">
+                <h4>Computer Vision</h4>
+                <p>Document and image analysis</p>
+            </div>
+            <div class="tech-item">
+                <h4>Predictive Models</h4>
+                <p>Statistical forecasting algorithms</p>
+            </div>
+            <div class="tech-item">
+                <h4>Cloud AI</h4>
+                <p>Scalable computing infrastructure</p>
+            </div>
+            <div class="tech-item">
+                <h4>Reinforcement Learning</h4>
+                <p>Self-improving decision systems</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Experience AI-Powered Advising?</h2>
+        <p>See how MashouraX's advanced AI can transform student support at your institution</p>
+        <div class="cta-buttons">
+            <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
+            <button class="secondary-btn" onclick="openModal()">Schedule AI Demo</button>
+        </div>
+    </section>
+
+    <!-- Demo Modal -->
+    <div id="demoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Schedule Your AI Demo</h2>
+                <p>Let's show you how MashouraX can transform your institution</p>
+            </div>
+            <div class="modal-body">
+                <form id="demoForm" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name *</label>
+                            <input type="text" required placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name *</label>
+                            <input type="text" required placeholder="Doe">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Work Email *</label>
+                        <input type="email" required placeholder="john.doe@university.edu">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" required placeholder="+20-2-xxxx-xxxx">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Institution Name *</label>
+                        <input type="text" required placeholder="Your University">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Your Role *</label>
+                        <select required>
+                            <option value="">Select your role</option>
+                            <option value="admin">Administrator</option>
+                            <option value="advisor">Academic Advisor</option>
+                            <option value="it">IT Director</option>
+                            <option value="registrar">Registrar</option>
+                            <option value="dean">Dean</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Student Population *</label>
+                        <select required>
+                            <option value="">Select range</option>
+                            <option value="0-1000">0 - 1,000</option>
+                            <option value="1000-5000">1,000 - 5,000</option>
+                            <option value="5000-10000">5,000 - 10,000</option>
+                            <option value="10000+">10,000+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>What interests you most?</label>
+                        <textarea placeholder="Tell us about your goals and challenges..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Schedule Demo →</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('demoModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('demoModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('demoModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Thank you! Our team will contact you shortly to schedule your personalized AI demo.');
+            closeModal();
+            document.getElementById('demoForm').reset();
+        }
+    </script>
+
+    <!-- Footer -->
+        <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>MashouraX</h3>
+                <p>Empowering institutions with AI-powered virtual advising to transform student success and drive better outcomes.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">𝕏</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">▶</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="solutions-virtual-advising.html">Virtual Advising</a></li>
+                    <li><a href="solutions-student-success.html">Student Success</a></li>
+                    <li><a href="solutions-academic-planning.html">Academic Planning</a></li>
+                    <li><a href="solutions-career-services.html">Career Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="webinars.html">Webinars</a></li>
+                    <li><a href="help-center.html">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="solutions-career-services.html">Careers</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MashouraX. All rights reserved. Built with excellence for student success.</p>
+        </div>
+    </footer>
+    <div class="search-overlay" id="searchOverlay" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);">
+        <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="searchTitle" style="width:min(900px,92vw);background:rgba(0,0,0,0.95);border:1px solid rgba(218,165,32,0.2);border-radius:14px;padding:1rem 1rem 1.2rem;">
+            <div class="search-header" style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.8rem;">
+                <input id="globalSearchInput" class="search-input" placeholder="Search pages or this page..." style="flex:1;padding:0.9rem 1rem;background:transparent;color:#fff;border:1px solid rgba(218,165,32,0.35);border-radius:10px;outline:none;" />
+                <button class="secondary-btn" id="closeSearchBtn">Close</button>
+            </div>
+            <div class="search-results" id="globalSearchResults" style="max-height:55vh;overflow:auto;display:grid;gap:0.8rem;"></div>
+        </div>
+    </div>
+    <script src="global-search.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - MashouraX</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="top-bar-item"><span>📧</span> support@mashourax.com</div>
+            <div class="top-bar-item"><span>📞</span> +1 (555) 123-4567</div>
+        </div>
+        <div class="top-bar-right">
+            <a href="index.html#about" class="top-bar-link">About</a>
+            <a href="index.html#blog" class="top-bar-link">Blog</a>
+            <a href="index.html#careers" class="top-bar-link">Careers</a>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo" onclick="window.location.href='index.html'">MashouraX</div>
+        <ul class="nav-center">
+            <li class="nav-item">
+                <a href="#solutions">Solutions ▾</a>
+                <div class="dropdown">
+                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
+                    <a href="solutions-student-success.html">Student Success</a>
+                    <a href="solutions-academic-planning.html">Academic Planning</a>
+                    <a href="solutions-career-services.html">Career Services</a>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#features">Features ▾</a>
+                <div class="dropdown">
+                    <a href="#">AI-Powered Support</a>
+                    <a href="#">Analytics Dashboard</a>
+                    <a href="#">24/7 Chat Support</a>
+                    <a href="#">Mobile App</a>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#">Resources ▾</a>
+                <div class="dropdown">
+                    <a href="case-studies.html">Case Studies</a>
+                    <a href="documentation.html">Documentation</a>
+                    <a href="webinars.html">Webinars</a>
+                    <a href="help-center.html">Help Center</a>
+                </div>
+            </li>
+            
+            <li class="nav-item"><a href="index.html#pricing">Pricing</a></li>
+            <li class="nav-item"><a href="index.html#security">Security</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="search-btn">🔍 Search</button>
+            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
+        </div>
+    </nav>
+
+    <section class="features" style="padding-top: 180px;">
+        <div class="section-header">
+            <div class="section-label">Resources</div>
+            <h2 class="section-title">Help Center</h2>
+            <p class="section-description">Find answers to common questions, or get in touch with our team.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">❓</div>
+                <h3>FAQs</h3>
+                <p>Quick answers for students and staff using MashouraX daily.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛠️</div>
+                <h3>Troubleshooting</h3>
+                <p>Guides to resolve common issues and optimize performance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧑‍💼</div>
+                <h3>Contact Support</h3>
+                <p>Need help? Reach out to our support team 24/7 for assistance.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="section-header">
+            <div class="section-label">Contact</div>
+            <h2 class="section-title">Send Us a Message</h2>
+            <p class="section-description">Reach our support team for help or advising. We typically respond within one business day.</p>
+        </div>
+
+        <div class="features-grid" style="max-width:900px;grid-template-columns:1fr;">
+            <div class="feature-card contact-card">
+                <form action="mailto:support@mashourax.com" method="post" enctype="text/plain">
+                    <div style="display:grid;gap:1rem;">
+                        <input type="text" name="Name" placeholder="Your name" required 
+                               style="padding:1rem;background:transparent;color:#fff;border:1px solid rgba(218,165,32,0.3);border-radius:10px;outline:none;"/>
+                        <input type="email" name="Email" placeholder="Your email" required 
+                               style="padding:1rem;background:transparent;color:#fff;border:1px solid rgba(218,165,32,0.3);border-radius:10px;outline:none;"/>
+                        <input type="text" name="Subject" placeholder="Subject" required 
+                               style="padding:1rem;background:transparent;color:#fff;border:1px solid rgba(218,165,32,0.3);border-radius:10px;outline:none;"/>
+                        <textarea name="Message" placeholder="How can we help?" rows="6" required 
+                                  style="padding:1rem;background:transparent;color:#fff;border:1px solid rgba(218,165,32,0.3);border-radius:10px;outline:none;resize:vertical;"></textarea>
+                        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+                            <button type="submit" class="primary-btn">Send Message →</button>
+                            <a href="mailto:support@mashourax.com" class="secondary-btn" style="text-decoration:none;display:inline-block;">Email Us Directly</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function(){
+            var form = document.querySelector('section.features form');
+            if (!form) return;
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+                var data = new FormData(form);
+                var name = (data.get('Name') || '').toString().trim();
+                var email = (data.get('Email') || '').toString().trim();
+                var subject = (data.get('Subject') || 'Support Request').toString().trim();
+                var message = (data.get('Message') || '').toString().trim();
+
+                var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                if (!name || !emailOk || !subject) {
+                    alert('Please enter a valid name, email, and subject.');
+                    return;
+                }
+
+                var body = 'Name: ' + name + '\n' +
+                           'Email: ' + email + '\n\n' +
+                           message;
+                var mailto = 'mailto:support@mashourax.com' +
+                             '?subject=' + encodeURIComponent(subject) +
+                             '&body=' + encodeURIComponent(body);
+                window.location.href = mailto;
+            });
+        })();
+    </script>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>MashouraX</h3>
+                <p>Empowering institutions with AI-powered virtual advising to transform student success and drive better outcomes.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">𝕏</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">▶</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#">Virtual Advising</a></li>
+                    <li><a href="index.html#">Student Success</a></li>
+                    <li><a href="index.html#">Academic Planning</a></li>
+                    <li><a href="index.html#">Career Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="webinars.html">Webinars</a></li>
+                    <li><a href="help-center.html">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#">About Us</a></li>
+                    <li><a href="index.html#">Careers</a></li>
+                    <li><a href="index.html#">Contact</a></li>
+                    <li><a href="index.html#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 MashouraX. All rights reserved. Built with excellence for student success.</p>
+        </div>
+    </footer>
+    <div class="search-overlay" id="searchOverlay" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);">
+        <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="searchTitle" style="width:min(900px,92vw);background:rgba(0,0,0,0.95);border:1px solid rgba(218,165,32,0.2);border-radius:14px;padding:1rem 1rem 1.2rem;">
+            <div class="search-header" style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.8rem;">
+                <input id="globalSearchInput" class="search-input" placeholder="Search pages or this page..." style="flex:1;padding:0.9rem 1rem;background:transparent;color:#fff;border:1px solid rgba(218,165,32,0.35);border-radius:10px;outline:none;" />
+                <button class="secondary-btn" id="closeSearchBtn">Close</button>
+            </div>
+            <div class="search-results" id="globalSearchResults" style="max-height:55vh;overflow:auto;display:grid;gap:0.8rem;"></div>
+        </div>
+    </div>
+    <script src="global-search.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Demo - MashouraX</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .demo-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            padding: 120px 20px 60px;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .demo-badge {
+            display: inline-block;
+            background: rgba(218, 165, 32, 0.1);
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            color: #DAA520;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .demo-header h1 {
+            font-size: 48px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .demo-header p {
+            font-size: 18px;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 60px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Analytics Dashboard Section */
+        .analytics-dashboard {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 80px 0;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            color: #DAA520;
+            font-weight: 700;
+        }
+
+        .date-filter {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(218, 165, 32, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            border-color: #DAA520;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.2);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #DAA520, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .metric-change {
+            font-size: 13px;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .metric-change.negative {
+            color: #ef4444;
+        }
+
+        .chart-section {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(218, 165, 32, 0.15);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            height: 200px;
+            padding-top: 20px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #DAA520, #FFD700);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            animation: growBar 1s ease-out;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bar:hover {
+            background: linear-gradient(to top, #FFD700, #DAA520);
+            box-shadow: 0 0 20px rgba(218, 165, 32, 0.5);
+        }
+
+        @keyframes growBar {
+            from { height: 0; opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #DAA520;
+            font-weight: 600;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #888;
+            white-space: nowrap;
+        }
+
+        /* Heatmap */
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .heatmap-day {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .heatmap-value {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .demo-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .demo-feature {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(218, 165, 32, 0.15);
+            padding: 30px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-feature:hover {
+            border-color: #DAA520;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(218, 165, 32, 0.15);
+        }
+
+        .demo-feature-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .demo-feature h3 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .demo-feature p {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .insights-section {
+            background: rgba(218, 165, 32, 0.05);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin: 80px 0;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #DAA520;
+        }
+
+        .insight-card h4 {
+            color: #DAA520;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .insight-card p {
+            color: #aaa;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .demo-cta {
+            text-align: center;
+            margin-top: 80px;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(218, 165, 32, 0.1), transparent);
+            border-radius: 16px;
+            border: 1px solid rgba(218, 165, 32, 0.2);
+        }
+
+        .demo-cta h2 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .demo-cta p {
+            font-size: 18px;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn, .secondary-btn {
+            padding: 14px 32px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border: none;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #DAA520, #FFD700);
+            color: #000;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.3);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(218, 165, 32, 0.5);
+        }
+
+        .secondary-btn:hover {
+            border-color: #DAA520;
+            background: rgba(218, 165, 32, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .demo-header h1 {
+                font-size: 32px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .demo-features {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .heatmap {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="top-bar-item">
+                <span>📧</span> support@mashourax.com
+            </div>
+            <div class="top-bar-item">
+                <span>📞</span> +20 (012) 707 23373
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <a href="about.html" class="top-bar-link">About</a>
+            <a href="#" class="top-bar-link">Blog</a>
+            <a href="#" class="top-bar-link">Careers</a>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav>
+        <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">MashouraX</div>
+        <ul class="nav-center">
+            <li class="nav-item">
+                <a href="index.html#solutions">Solutions ▾</a>
+                <div class="dropdown">
+                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
+                    <a href="solutions-student-success.html">Student Success</a>
+                    <a href="solutions-academic-planning.html">Academic Planning</a>
+                    <a href="solutions-career-services.html">Career Services</a>
+                </div>
+            </li>
+           
+            <li class="nav-item">
+                <a href="index.html#features">Features ▾</a>
+                <div class="dropdown">
+                    <a href="ai-features.html">AI-Powered Support</a>
+                    <a href="analytics-dashboard.html">Analytics Dashboard</a>
+                    <a href="#">24/7 Chat Support</a>
+                    <a href="mobile.html">Mobile App</a>
+                </div>
+           
+            </li> 
+            <li class="nav-item">
+                <a href="index.html#resources">Resources ▾</a>
+                <div class="dropdown">
+                    <a href="case-studies.html">Case Studies</a>
+                    <a href="documentation.html">Documentation</a>
+                    <a href="webinars.html">Webinars</a>
+                    <a href="help-center.html">Help Center</a>
+                </div>
+            </li>
+            
+           
+            <li class="nav-item">
+                <a href="index.html#pricing">Pricing</a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html#security">Security</a>
+            </li>
+        </ul>
+        <div class="nav-right">
+            <button class="search-btn">🔍 Search</button>
+            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
+        </div>
+    </nav>
+
+    <!-- Demo Page Content -->
+    <section class="demo-page">
+        <div class="demo-container">
+            <div class="demo-header">
+                <div class="demo-badge">
+                    ▶ Platform Demo
+                </div>
+                <h1>See MashouraX in Action</h1>
+                <p>Experience our AI-powered virtual advising platform with live analytics, real-time insights, and comprehensive student support features.</p>
+            </div>
+
+            <div class="video-wrapper">
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                        title="MashouraX Demo Video" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Analytics Dashboard -->
+            <div class="analytics-dashboard">
+                <div class="dashboard-header">
+                    <div class="dashboard-title">📊 Live Analytics Dashboard</div>
+                    <div class="date-filter">📅 Last 30 Days</div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Active Students</div>
+                        <div class="metric-value">12,847</div>
+                        <div class="metric-change">↑ 12.5% from last month</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Support Sessions</div>
+                        <div class="metric-value">34,592</div>
+                        <div class="metric-change">↑ 18.3% from last month</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Avg Response Time</div>
+                        <div class="metric-value">2.4s</div>
+                        <div class="metric-change negative">↓ 0.8s improvement</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Satisfaction Rate</div>
+                        <div class="metric-value">98.2%</div>
+                        <div class="metric-change">↑ 2.1% from last month</div>
+                    </div>
+                </div>
+
+                <!-- Bar Chart -->
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <div class="chart-title">Weekly Student Engagement</div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #DAA520;"></div>
+                                <span>Interactions</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 60%;">
+                            <div class="bar-value">4.2K</div>
+                            <div class="bar-label">Mon</div>
+                        </div>
+                        <div class="bar" style="height: 75%;">
+                            <div class="bar-value">5.1K</div>
+                            <div class="bar-label">Tue</div>
+                        </div>
+                        <div class="bar" style="height: 90%;">
+                            <div class="bar-value">6.3K</div>
+                            <div class="bar-label">Wed</div>
+                        </div>
+                        <div class="bar" style="height: 85%;">
+                            <div class="bar-value">5.9K</div>
+                            <div class="bar-label">Thu</div>
+                        </div>
+                        <div class="bar" style="height: 70%;">
+                            <div class="bar-value">4.8K</div>
+                            <div class="bar-label">Fri</div>
+                        </div>
+                        <div class="bar" style="height: 40%;">
+                            <div class="bar-value">2.7K</div>
+                            <div class="bar-label">Sat</div>
+                        </div>
+                        <div class="bar" style="height: 35%;">
+                            <div class="bar-value">2.4K</div>
+                            <div class="bar-label">Sun</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Heatmap -->
+                <div class="chart-section">
+                    <div class="chart-title" style="margin-bottom: 20px;">Peak Activity Hours</div>
+                    <div class="heatmap">
+                        <div class="heatmap-cell" style="background: rgba(218, 165, 32, 0.3);">
+                            <div class="heatmap-day">Mon</div>
+                            <div class="heatmap-value">High</div>
+                        </div>
+                        <div class="heatmap-cell" style="background: rgba(218, 165, 32, 0.5);">
+                            <div class="heatmap-day">Tue</div>
+                            <div class="heatmap-value">Very High</div>
+                        </div>
+                        <div class="heatmap-cell" style="background: rgba(218, 165, 32, 0.7);">
+                            <div class="heatmap-day">Wed</div>
+                            <div class="heatmap-value">Peak</div>
+                        </div>
+                        <div class="heatmap-cell" style="background: rgba(218, 165, 32, 0.6);">
+                            <div class="heatmap-day">Thu</div>
+                            <div class="heatmap-value">Very High</div>
+                        </div>
+                        <div class="heatmap-cell" style="background: rgba(218, 165, 32, 0.4);">
+                            <div class="heatmap-day">Fri</div>
+                            <div class="heatmap-value">High</div>
+                        </div>
+                        <div class="heatmap-cell" style="background: rgba(218, 165, 32, 0.2);">
+                            <div class="heatmap-day">Sat</div>
+                            <div class="heatmap-value">Medium</div>
+                        </div>
+                        <div class="heatmap-cell" style="background: rgba(218, 165, 32, 0.15);">
+                            <div class="heatmap-day">Sun</div>
+                            <div class="heatmap-value">Low</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Features -->
+            <div style="text-align: center; margin: 80px 0 40px;">
+                <div class="demo-badge">💎 Platform Features</div>
+                <h2 style="color: #ffffff; font-size: 36px; margin: 20px 0;">Everything You Need to Succeed</h2>
+                <p style="color: #aaa; font-size: 18px;">Comprehensive tools for student engagement and success</p>
+            </div>
+
+            <div class="demo-features">
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">📊</div>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Monitor student engagement, track metrics, and identify trends instantly with live dashboards updated in real-time.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🤖</div>
+                    <h3>AI-Powered Support</h3>
+                    <p>Intelligent chatbot handles 850+ vetted questions with natural, personalized responses available 24/7.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🎯</div>
+                    <h3>Student Insights</h3>
+                    <p>Identify at-risk students early with predictive analytics and provide targeted interventions proactively.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">📈</div>
+                    <h3>Performance Tracking</h3>
+                    <p>Track individual student progress, course completion rates, and milestone achievements in one place.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">📱</div>
+                    <h3>Mobile-First Design</h3>
+                    <p>Access all features on any device with responsive design optimized for mobile, tablet, and desktop.</p>
+                </div>
+                <div class="demo-feature">
+                    <div class="demo-feature-icon">🔔</div>
+                    <h3>Smart Notifications</h3>
+                    <p>Automated alerts for important events, deadlines, and student activities keep everyone informed.</p>
+                </div>
+            </div>
+
+            <!-- Insights Section -->
+            <div class="insights-section">
+                <div style="text-align: center;">
+                    <div class="demo-badge">💡 Key Insights</div>
+                    <h2 style="color: #ffffff; font-size: 32px; margin: 20px 0;">Data-Driven Decision Making</h2>
+                    <p style="color: #aaa; font-size: 16px;">Actionable insights that drive student success</p>
+                </div>
+                
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>Peak Engagement Times</h4>
+                        <p>Discover when students are most active and optimize support staff schedules accordingly. Wednesday shows highest engagement at 65% above average.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Response Time Impact</h4>
+                        <p>Students who receive responses within 3 seconds show 45% higher satisfaction rates and are more likely to complete their degrees.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Retention Indicators</h4>
+                        <p>Early identification of at-risk students through engagement patterns has improved retention rates by 23% year-over-year.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Popular Topics</h4>
+                        <p>Financial aid, course registration, and degree planning account for 67% of inquiries. Targeted resources reduce support load.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Student Satisfaction</h4>
+                        <p>98.2% satisfaction rate with 24/7 AI support. Students appreciate instant answers and consistent quality responses.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Cost Savings</h4>
+                        <p>Institutions save an average of 40+ staff hours per week by automating routine inquiries and administrative tasks.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="demo-cta">
+                <h2>Ready to Transform Student Success?</h2>
+                <p>Start your free trial today and experience the power of AI-driven analytics and student support.</p>
+                <div class="demo-buttons">
+                    <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
+                    <button class="secondary-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>MashouraX</h3>
+                <p>Empowering institutions with AI-powered virtual advising to transform student success and drive better outcomes.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">𝕏</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">▶</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="solutions-virtual-advising.html">Virtual Advising</a></li>
+                    <li><a href="solutions-student-success.html">Student Success</a></li>
+                    <li><a href="solutions-academic-planning.html">Academic Planning</a></li>
+                    <li><a href="solutions-career-services.html">Career Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="webinars.html">Webinars</a></li>
+                    <li><a href="help-center.html">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="solutions-career-services.html">Careers</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MashouraX. All rights reserved. Built with excellence for student success.</p>
+        </div>
+    </footer>
+    <div class="search-overlay" id="searchOverlay" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);">
+        <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="searchTitle" style="width:min(900px,92vw);background:rgba(0,0,0,0.95);border:1px solid rgba(218,165,32,0.2);border-radius:14px;padding:1rem 1rem 1.2rem;">
+            <div class="search-header" style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.8rem;">
+                <input id="globalSearchInput" class="search-input" placeholder="Search pages or this page..." style="flex:1;padding:0.9rem 1rem;background:transparent;color:#fff;border:1px solid rgba(218,165,32,0.35);border-radius:10px;outline:none;" />
+                <button class="secondary-btn" id="closeSearchBtn">Close</button>
+            </div>
+            <div class="search-results" id="globalSearchResults" style="max-height:55vh;overflow:auto;display:grid;gap:0.8rem;"></div>
+        </div>
+    </div>
+    <script src="global-search.js"></script>
+</body>
+</html>
