@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - solutions-student-success
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,22 +17,22 @@
             <div class="top-bar-item"><span>📞</span> +1 (555) 123-4567</div>
         </div>
         <div class="top-bar-right">
-            <a href="index.html#about" class="top-bar-link">About</a>
-            <a href="index.html#blog" class="top-bar-link">Blog</a>
-            <a href="index.html#careers" class="top-bar-link">Careers</a>
+            <a href="index.php#about" class="top-bar-link">About</a>
+            <a href="index.php#blog" class="top-bar-link">Blog</a>
+            <a href="index.php#careers" class="top-bar-link">Careers</a>
         </div>
     </div>
 
     <nav>
-        <div class="logo" onclick="window.location.href='index.html'">MashouraX</div>
+        <div class="logo" onclick="window.location.href='index.php'">MashouraX</div>
         <ul class="nav-center">
             <li class="nav-item">
                 <a href="#solutions">Solutions ▾</a>
                 <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
+                    <a href="solutions-virtual-advising.php">Virtual Advising</a>
+                    <a href="solutions-student-success.php">Student Success</a>
+                    <a href="solutions-academic-planning.php">Academic Planning</a>
+                    <a href="solutions-career-services.php">Career Services</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -44,19 +47,19 @@
             <li class="nav-item">
                 <a href="#">Resources ▾</a>
                 <div class="dropdown">
-                    <a href="case-studies.html">Case Studies</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="webinars.html">Webinars</a>
-                    <a href="help-center.html">Help Center</a>
+                    <a href="case-studies.php">Case Studies</a>
+                    <a href="documentation.php">Documentation</a>
+                    <a href="webinars.php">Webinars</a>
+                    <a href="help-center.php">Help Center</a>
                 </div>
             </li>
-            <li class="nav-item"><a href="index.html#pricing">Pricing</a></li>
-            <li class="nav-item"><a href="index.html#security">Security</a></li>
+            <li class="nav-item"><a href="index.php#pricing">Pricing</a></li>
+            <li class="nav-item"><a href="index.php#security">Security</a></li>
         </ul>
         <div class="nav-right">
             <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
+            <button class="login-btn" onclick="window.location.href='login.php'">Login</button>
+            <button class="demo-btn" onclick="window.location.href='demo.php'">Request Demo</button>
         </div>
     </nav>
 
@@ -129,8 +132,8 @@
         <h2>Boost Retention With Proactive Support</h2>
         <p>Launch a student success pilot in under 30 days with our implementation team.</p>
         <div class="hero-buttons">
-            <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
-            <button class="secondary-btn" onclick="window.location.href='demo.html'">Talk to an Expert</button>
+            <button class="primary-btn" onclick="window.location.href='trial.php'">Start Free Trial →</button>
+            <button class="secondary-btn" onclick="window.location.href='demo.php'">Talk to an Expert</button>
         </div>
     </section>
 
@@ -143,28 +146,28 @@
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul class="footer-links">
-                    <li><a href="solutions-virtual-advising.html">Virtual Advising</a></li>
-                    <li><a href="solutions-student-success.html">Student Success</a></li>
-                    <li><a href="solutions-academic-planning.html">Academic Planning</a></li>
-                    <li><a href="solutions-career-services.html">Career Services</a></li>
+                    <li><a href="solutions-virtual-advising.php">Virtual Advising</a></li>
+                    <li><a href="solutions-student-success.php">Student Success</a></li>
+                    <li><a href="solutions-academic-planning.php">Academic Planning</a></li>
+                    <li><a href="solutions-career-services.php">Career Services</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="documentation.html">Documentation</a></li>
-                    <li><a href="case-studies.html">Case Studies</a></li>
-                    <li><a href="webinars.html">Webinars</a></li>
-                    <li><a href="help-center.html">Help Center</a></li>
+                    <li><a href="documentation.php">Documentation</a></li>
+                    <li><a href="case-studies.php">Case Studies</a></li>
+                    <li><a href="webinars.php">Webinars</a></li>
+                    <li><a href="help-center.php">Help Center</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="index.html#">About Us</a></li>
-                    <li><a href="index.html#">Careers</a></li>
-                    <li><a href="index.html#">Contact</a></li>
-                    <li><a href="index.html#">Privacy Policy</a></li>
+                    <li><a href="index.php#">About Us</a></li>
+                    <li><a href="index.php#">Careers</a></li>
+                    <li><a href="index.php#">Contact</a></li>
+                    <li><a href="index.php#">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -174,5 +177,6 @@
     </footer>
 </body>
 </html>
+
 
 

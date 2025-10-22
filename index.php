@@ -1,3 +1,15 @@
+<?php
+// MashouraX Virtual Advising Platform - index
+try {
+    require_once 'includes/auth.php';
+    // Get current user if logged in
+    $currentUser = getCurrentUser();
+} catch (Exception $e) {
+    // If database connection fails, set currentUser to null
+    $currentUser = null;
+    error_log("Auth error: " . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +17,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MashouraX - Virtual Advising Platform</title>
     <link rel="stylesheet" href="index.css">
+    <style>
+        /* Fallback styles in case external CSS fails */
+        body { 
+            background: #000 !important; 
+            color: #fff !important; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        }
+        .hero { 
+            min-height: 100vh !important; 
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: center !important;
+            padding: 140px 5% 0 !important;
+        }
+        .hero h1 { 
+            font-size: 4.5rem !important; 
+            color: #fff !important; 
+            margin-bottom: 1.5rem !important;
+        }
+        .hero p { 
+            color: #aaa !important; 
+            font-size: 1.25rem !important; 
+            margin-bottom: 2.5rem !important;
+        }
+    </style>
 </head>
 <body>
     <div class="bg-animation"></div>
@@ -15,71 +52,7 @@
     <div class="particle"></div>
     <div class="particle"></div>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <div class="top-bar-item">
-                <span>📧</span> support@mashourax.com
-            </div>
-            <div class="top-bar-item">
-                <span>📞</span> +20 (012) 707 23373
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <a href="about.html" class="top-bar-link">About</a>
-            <a href="#" class="top-bar-link">Blog</a>
-            <a href="#" class="top-bar-link">Careers</a>
-        </div>
-    </div>
-
-    <!-- Main Navigation -->
-    <nav>
-        <div class="logo"><a href="index.html">MashouraX</a></div>
-        <ul class="nav-center">
-            <li class="nav-item">
-                <a href="#solutions">Solutions ▾</a>
-                <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
-                </div>
-            </li>
-           
-            <li class="nav-item">
-                <a href="#features">Features ▾</a>
-                <div class="dropdown">
-                    <a href="ai-features.html">AI-Powered Support</a>
-                    <a href="analytics-dashboard.html">Analytics Dashboard</a>
-                    <a href="#">24/7 Chat Support</a>
-                    <a href="mobile.html">Mobile App</a>
-                </div>
-           
-            </li> 
-            <li class="nav-item">
-                <a href="#resources">Resources ▾</a>
-                <div class="dropdown">
-                    <a href="case-studies.html">Case Studies</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="webinars.html">Webinars</a>
-                    <a href="help-center.html">Help Center</a>
-                </div>
-            </li>
-            
-           
-            <li class="nav-item">
-                <a href="#pricing">Pricing</a>
-            </li>
-            <li class="nav-item">
-                <a href="#security">Security</a>
-            </li>
-        </ul>
-        <div class="nav-right">
-            <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
-        </div>
-    </nav>
+    <?php include 'includes/navigation.php'; ?>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -91,8 +64,8 @@
                 <h1>Transform Your Academic Journey</h1>
                 <p>Combine AI-powered automation with personalized guidance to create student-specific conversations proven to increase enrollment and degree completion. Experience support that never sleeps.</p>
                 <div class="hero-buttons">
-                    <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
-                    <button class="secondary-btn" onclick="window.location.href='demo.html'">Watch Demo</button>
+                    <button class="primary-btn" onclick="window.location.href='trial.php'">Start Free Trial →</button>
+                    <button class="secondary-btn" onclick="window.location.href='demo.php'">Watch Demo</button>
                 </div>
             </div>
             <div class="hero-right">
@@ -140,7 +113,7 @@
                 <div class="ai-subtitle">AI-Powered Student Support</div>
                 <h2>Experience the Power of Machine Learning</h2>
                 <p>From a library of 850+ vetted questions, MashouraX continually improves the quality of answers and stays compliant with evolving regulatory updates. Our advanced AI adapts to each student's unique needs.</p>
-                <button class="primary-btn" onclick="window.location.href='ai-features.html'">Explore AI Features →</button>
+                <button class="primary-btn" onclick="window.location.href='ai-features.php'">Explore AI Features →</button>
             </div>
             <div class="ai-visual">
             </div>
@@ -303,28 +276,28 @@
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul class="footer-links">
-                    <li><a href="solutions-virtual-advising.html">Virtual Advising</a></li>
-                    <li><a href="solutions-student-success.html">Student Success</a></li>
-                    <li><a href="solutions-academic-planning.html">Academic Planning</a></li>
-                    <li><a href="solutions-career-services.html">Career Services</a></li>
+                    <li><a href="solutions-virtual-advising.php">Virtual Advising</a></li>
+                    <li><a href="solutions-student-success.php">Student Success</a></li>
+                    <li><a href="solutions-academic-planning.php">Academic Planning</a></li>
+                    <li><a href="solutions-career-services.php">Career Services</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="documentation.html">Documentation</a></li>
-                    <li><a href="case-studies.html">Case Studies</a></li>
-                    <li><a href="webinars.html">Webinars</a></li>
-                    <li><a href="help-center.html">Help Center</a></li>
+                    <li><a href="documentation.php">Documentation</a></li>
+                    <li><a href="case-studies.php">Case Studies</a></li>
+                    <li><a href="webinars.php">Webinars</a></li>
+                    <li><a href="help-center.php">Help Center</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="solutions-career-services.html">Careers</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="solutions-career-services.php">Careers</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="privacy.php">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -362,11 +335,11 @@
             }
             function renderResults(q){
                 var pages = [
-                    {title:'Case Studies', url:'case-studies.html', tags:['case','studies','trusted','universities']},
-                    {title:'Documentation', url:'documentation.html', tags:['docs','guide','api','setup']},
-                    {title:'Webinars', url:'webinars.html', tags:['events','sessions','talks']},
-                    {title:'Help Center', url:'help-center.html', tags:['help','support','contact']},
-                    {title:'Home', url:'index.html', tags:['home','features','security']}
+                    {title:'Case Studies', url:'case-studies.php', tags:['case','studies','trusted','universities']},
+                    {title:'Documentation', url:'documentation.php', tags:['docs','guide','api','setup']},
+                    {title:'Webinars', url:'webinars.php', tags:['events','sessions','talks']},
+                    {title:'Help Center', url:'help-center.php', tags:['help','support','contact']},
+                    {title:'Home', url:'index.php', tags:['home','features','security']}
                 ];
                 q = (q||'').toLowerCase();
                 var items = [];
@@ -388,7 +361,7 @@
                 if(!items.length){
                     results.innerHTML = '<div style="color:#aaa;">No results. Try keywords like "case", "docs", "webinars", or "help".</div>';
                 } else {
-                    results.innerHTML = items.map(function(it){ return '<div style="padding:0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(218,165,32,0.15);border-radius:10px;">'+it.html+'</div>'; }).join('');
+                    results.innerHTML = items.map(function(it){ return '<div style="padding:0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(218,165,32,0.15);border-radius:10px;">'+it.php+'</div>'; }).join('');
                     var scrollBtns = Array.from(results.querySelectorAll('[data-scroll]'));
                     var scrollTargets = items.filter(function(i){return i.scrollTo;}).map(function(i){return i.scrollTo;});
                     scrollBtns.forEach(function(btn, idx){

@@ -1,3 +1,26 @@
+<?php
+// MashouraX Virtual Advising Platform - login
+require_once 'includes/auth.php';
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    
+    $result = authenticateUser($email, $password);
+    
+    if ($result['success']) {
+        // Start user session
+        startUserSession($result['user']);
+        
+        // Redirect to homepage after login
+        header('Location: index.php');
+        exit();
+    } else {
+        $errorMessage = $result['message'];
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +32,7 @@
 <body>
     <div class="container">
         <div class="logo">
-            <h1><a href="index.html">MashouraX</a></h1>
+            <h1><a href="index.php">MashouraX</a></h1>
             <p>Virtual Advising Platform</p>
         </div>
 
@@ -19,15 +42,21 @@
                 <p>Sign in to continue your academic journey</p>
             </div>
 
-            <form id="loginForm">
+            <?php if (isset($errorMessage)): ?>
+                <div class="alert alert-error">
+                    <?php echo htmlspecialchars($errorMessage); ?>
+                </div>
+            <?php endif; ?>
+
+            <form id="loginForm" method="POST" action="">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="you@example.com" required>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
 
                 <div class="forgot-password">
@@ -47,30 +76,28 @@
             </div>
 
             <div class="signup-link">
-                Don't have an account? <a href="signup.html">Sign up</a>
+                Don't have an account? <a href="signup.php">Sign up</a>
             </div>
         </div>
 
         <div class="back-home">
-            <a href="index.html">← Back to Home</a>
+            <a href="index.php">← Back to Home</a>
         </div>
     </div>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Store in memory
-            const userData = { email: email, timestamp: new Date() };
-            
-            // Simulate login
-            alert('Login successful! Welcome to MashouraX.');
-            
-            // Redirect to dashboard or homepage
-            window.location.href = 'index.html';
+            // Basic validation
+            if (!email || !password) {
+                e.preventDefault();
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // If validation passes, let the form submit normally
         });
 
         function socialLogin(provider) {

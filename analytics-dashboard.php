@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - analytics-dashboard
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -460,7 +463,7 @@
             </div>
         </div>
         <div class="top-bar-right">
-            <a href="about.html" class="top-bar-link">About</a>
+            <a href="about.php" class="top-bar-link">About</a>
             <a href="#" class="top-bar-link">Blog</a>
             <a href="#" class="top-bar-link">Careers</a>
         </div>
@@ -468,50 +471,50 @@
 
     <!-- Main Navigation -->
     <nav>
-        <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">MashouraX</div>
+        <div class="logo" onclick="window.location.href='index.php'" style="cursor: pointer;">MashouraX</div>
         <ul class="nav-center">
             <li class="nav-item">
-                <a href="index.html#solutions">Solutions ▾</a>
+                <a href="index.php#solutions">Solutions ▾</a>
                 <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
+                    <a href="solutions-virtual-advising.php">Virtual Advising</a>
+                    <a href="solutions-student-success.php">Student Success</a>
+                    <a href="solutions-academic-planning.php">Academic Planning</a>
+                    <a href="solutions-career-services.php">Career Services</a>
                 </div>
             </li>
            
             <li class="nav-item">
-                <a href="index.html#features">Features ▾</a>
+                <a href="index.php#features">Features ▾</a>
                 <div class="dropdown">
-                    <a href="ai-features.html">AI-Powered Support</a>
-                    <a href="analytics-dashboard.html">Analytics Dashboard</a>
+                    <a href="ai-features.php">AI-Powered Support</a>
+                    <a href="analytics-dashboard.php">Analytics Dashboard</a>
                     <a href="#">24/7 Chat Support</a>
-                    <a href="mobile.html">Mobile App</a>
+                    <a href="mobile.php">Mobile App</a>
                 </div>
            
             </li> 
             <li class="nav-item">
-                <a href="index.html#resources">Resources ▾</a>
+                <a href="index.php#resources">Resources ▾</a>
                 <div class="dropdown">
-                    <a href="case-studies.html">Case Studies</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="webinars.html">Webinars</a>
-                    <a href="help-center.html">Help Center</a>
+                    <a href="case-studies.php">Case Studies</a>
+                    <a href="documentation.php">Documentation</a>
+                    <a href="webinars.php">Webinars</a>
+                    <a href="help-center.php">Help Center</a>
                 </div>
             </li>
             
            
             <li class="nav-item">
-                <a href="index.html#pricing">Pricing</a>
+                <a href="index.php#pricing">Pricing</a>
             </li>
             <li class="nav-item">
-                <a href="index.html#security">Security</a>
+                <a href="index.php#security">Security</a>
             </li>
         </ul>
         <div class="nav-right">
             <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
+            <button class="login-btn" onclick="window.location.href='login.php'">Login</button>
+            <button class="demo-btn" onclick="window.location.href='demo.php'">Request Demo</button>
         </div>
     </nav>
 
@@ -727,8 +730,8 @@
                 <h2>Ready to Transform Student Success?</h2>
                 <p>Start your free trial today and experience the power of AI-driven analytics and student support.</p>
                 <div class="demo-buttons">
-                    <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
-                    <button class="secondary-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+                    <button class="primary-btn" onclick="window.location.href='trial.php'">Start Free Trial →</button>
+                    <button class="secondary-btn" onclick="window.location.href='index.php'">← Back to Home</button>
                 </div>
             </div>
         </div>
@@ -750,28 +753,28 @@
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul class="footer-links">
-                    <li><a href="solutions-virtual-advising.html">Virtual Advising</a></li>
-                    <li><a href="solutions-student-success.html">Student Success</a></li>
-                    <li><a href="solutions-academic-planning.html">Academic Planning</a></li>
-                    <li><a href="solutions-career-services.html">Career Services</a></li>
+                    <li><a href="solutions-virtual-advising.php">Virtual Advising</a></li>
+                    <li><a href="solutions-student-success.php">Student Success</a></li>
+                    <li><a href="solutions-academic-planning.php">Academic Planning</a></li>
+                    <li><a href="solutions-career-services.php">Career Services</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="documentation.html">Documentation</a></li>
-                    <li><a href="case-studies.html">Case Studies</a></li>
-                    <li><a href="webinars.html">Webinars</a></li>
-                    <li><a href="help-center.html">Help Center</a></li>
+                    <li><a href="documentation.php">Documentation</a></li>
+                    <li><a href="case-studies.php">Case Studies</a></li>
+                    <li><a href="webinars.php">Webinars</a></li>
+                    <li><a href="help-center.php">Help Center</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="solutions-career-services.html">Careers</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="solutions-career-services.php">Careers</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="privacy.php">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>
