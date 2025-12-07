@@ -52,7 +52,6 @@ try {
     <div class="particle"></div>
     <div class="particle"></div>
 
-<<<<<<< HEAD:index.html
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="top-bar-left">
@@ -89,7 +88,7 @@ try {
                 <div class="dropdown">
                     <a href="ai-features.html">AI-Powered Support</a>
                     <a href="analytics-dashboard.html">Analytics Dashboard</a>
-                    <a href="chat-support.html">24/7 Chat Support</a>
+                    <a href="chat-support.php">24/7 Chat Support</a>
                     <a href="mobile.html">Mobile App</a>
                 </div>
            
@@ -118,9 +117,6 @@ try {
             <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
         </div>
     </nav>
-=======
-    <?php include 'includes/navigation.php'; ?>
->>>>>>> 0b1cc2bb5f4e7a970f6b7446ba49c679fb0c0302:index.php
 
     <!-- Hero Section -->
     <section class="hero" id="home">
