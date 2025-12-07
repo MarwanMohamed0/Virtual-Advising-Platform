@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - trial
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -668,7 +671,7 @@
     </div>
 
     <nav>
-        <div class="logo" onclick="window.location.href='index.html'">MashouraX</div>
+        <div class="logo" onclick="window.location.href='index.php'">MashouraX</div>
         <ul class="nav-center">
             <li class="nav-item"><a href="#pricing">Pricing</a></li>
             <li class="nav-item"><a href="#features">Features</a></li>

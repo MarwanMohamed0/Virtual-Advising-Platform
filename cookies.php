@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - cookies
+?>
 <!-- Cookie Consent Banner - Include this in all pages -->
 <!-- Floating Cookie Icon -->
 <div id="cookieIcon" class="cookie-float-icon" onclick="openCookieSettings()">

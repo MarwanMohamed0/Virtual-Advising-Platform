@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - about
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -675,9 +678,9 @@
     </div>
 
     <nav>
-        <div class="logo" onclick="window.location.href='index.html'">MashouraX</div>
+        <div class="logo" onclick="window.location.href='index.php'">MashouraX</div>
         <ul class="nav-center">
-            <li class="nav-item"><a href="index.html">Home</a></li>
+            <li class="nav-item"><a href="index.php">Home</a></li>
             <li class="nav-item"><a href="#mission">Mission</a></li>
             <li class="nav-item"><a href="#team">Team</a></li>
             <li class="nav-item"><a href="#contact">Contact</a></li>
@@ -847,7 +850,7 @@
     <section class="cta-section">
         <h2>Ready to Transform Your Institution?</h2>
         <p>Join hundreds of institutions using MashouraX to provide exceptional student support and drive better outcomes.</p>
-        <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
+        <button class="primary-btn" onclick="window.location.href='trial.php'">Start Free Trial →</button>
     </section>
 
     <footer>
@@ -883,6 +886,6 @@
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="about.php">About Us</a></li>
                     <li><a href="#">Careers</a></li>
                     <li><a href="#">Contact</a></li>

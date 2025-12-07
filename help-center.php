@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - help-center
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,22 +23,22 @@
             <div class="top-bar-item"><span>📞</span> +1 (555) 123-4567</div>
         </div>
         <div class="top-bar-right">
-            <a href="index.html#about" class="top-bar-link">About</a>
-            <a href="index.html#blog" class="top-bar-link">Blog</a>
-            <a href="index.html#careers" class="top-bar-link">Careers</a>
+            <a href="index.php#about" class="top-bar-link">About</a>
+            <a href="index.php#blog" class="top-bar-link">Blog</a>
+            <a href="index.php#careers" class="top-bar-link">Careers</a>
         </div>
     </div>
 
     <nav>
-        <div class="logo" onclick="window.location.href='index.html'">MashouraX</div>
+        <div class="logo" onclick="window.location.href='index.php'">MashouraX</div>
         <ul class="nav-center">
             <li class="nav-item">
                 <a href="#solutions">Solutions ▾</a>
                 <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
+                    <a href="solutions-virtual-advising.php">Virtual Advising</a>
+                    <a href="solutions-student-success.php">Student Success</a>
+                    <a href="solutions-academic-planning.php">Academic Planning</a>
+                    <a href="solutions-career-services.php">Career Services</a>
                 </div>
             </li>
             
@@ -43,20 +46,20 @@
             <li class="nav-item">
                 <a href="#">Resources ▾</a>
                 <div class="dropdown">
-                    <a href="case-studies.html">Case Studies</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="webinars.html">Webinars</a>
-                    <a href="help-center.html">Help Center</a>
+                    <a href="case-studies.php">Case Studies</a>
+                    <a href="documentation.php">Documentation</a>
+                    <a href="webinars.php">Webinars</a>
+                    <a href="help-center.php">Help Center</a>
                 </div>
             </li>
             
-            <li class="nav-item"><a href="index.html#pricing">Pricing</a></li>
-            <li class="nav-item"><a href="index.html#security">Security</a></li>
+            <li class="nav-item"><a href="index.php#pricing">Pricing</a></li>
+            <li class="nav-item"><a href="index.php#security">Security</a></li>
         </ul>
         <div class="nav-right">
             <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
+            <button class="login-btn" onclick="window.location.href='login.php'">Login</button>
+            <button class="demo-btn" onclick="window.location.href='demo.php'">Request Demo</button>
         </div>
     </nav>
 
@@ -158,28 +161,28 @@
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul class="footer-links">
-                    <li><a href="index.html#">Virtual Advising</a></li>
-                    <li><a href="index.html#">Student Success</a></li>
-                    <li><a href="index.html#">Academic Planning</a></li>
-                    <li><a href="index.html#">Career Services</a></li>
+                    <li><a href="index.php#">Virtual Advising</a></li>
+                    <li><a href="index.php#">Student Success</a></li>
+                    <li><a href="index.php#">Academic Planning</a></li>
+                    <li><a href="index.php#">Career Services</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="documentation.html">Documentation</a></li>
-                    <li><a href="case-studies.html">Case Studies</a></li>
-                    <li><a href="webinars.html">Webinars</a></li>
-                    <li><a href="help-center.html">Help Center</a></li>
+                    <li><a href="documentation.php">Documentation</a></li>
+                    <li><a href="case-studies.php">Case Studies</a></li>
+                    <li><a href="webinars.php">Webinars</a></li>
+                    <li><a href="help-center.php">Help Center</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="index.html#">About Us</a></li>
-                    <li><a href="index.html#">Careers</a></li>
-                    <li><a href="index.html#">Contact</a></li>
-                    <li><a href="index.html#">Privacy Policy</a></li>
+                    <li><a href="index.php#">About Us</a></li>
+                    <li><a href="index.php#">Careers</a></li>
+                    <li><a href="index.php#">Contact</a></li>
+                    <li><a href="index.php#">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -207,16 +210,16 @@
             function closeSearch(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
             function renderResults(q){
                 var pages=[
-                    {title:'Case Studies', url:'case-studies.html', tags:['case','studies','trusted','universities']},
-                    {title:'Documentation', url:'documentation.html', tags:['docs','guide','api','setup']},
-                    {title:'Webinars', url:'webinars.html', tags:['events','sessions','talks']},
-                    {title:'Help Center', url:'help-center.html', tags:['help','support','contact']}
+                    {title:'Case Studies', url:'case-studies.php', tags:['case','studies','trusted','universities']},
+                    {title:'Documentation', url:'documentation.php', tags:['docs','guide','api','setup']},
+                    {title:'Webinars', url:'webinars.php', tags:['events','sessions','talks']},
+                    {title:'Help Center', url:'help-center.php', tags:['help','support','contact']}
                 ];
                 q=(q||'').toLowerCase(); var items=[];
                 pages.forEach(function(p){var hay=(p.title+' '+p.tags.join(' ')).toLowerCase(); if(!q||hay.includes(q)){items.push({html:'<div style=\"display:flex;align-items:center;justify-content:space-between;gap:1rem;\"><div><span style=\"color:#DAA520;font-size:0.8rem;margin-right:0.5rem;\">Page</span>'+p.title+'</div><a class=\"secondary-btn\" href=\"'+p.url+'\">Open</a></div>'});}});
                 if(q){ Array.from(document.querySelectorAll('h1,h2,h3,p,li')).forEach(function(n){ var t=(n.textContent||'').trim(); if(t && t.toLowerCase().includes(q)){ items.push({html:'<div style=\"display:flex;align-items:center;justify-content:space-between;gap:1rem;\"><div><span style=\"color:#DAA520;font-size:0.8rem;margin-right:0.5rem;\">This page</span>'+t.substring(0,120)+'</div><button class=\"secondary-btn\" data-scroll=\"1\">View</button></div>', scrollTo:n}); }}); }
                 if(!items.length){ results.innerHTML='<div style=\"color:#aaa;\">No results. Try keywords like \"case\", \"docs\", \"webinars\", or \"help\".</div>'; }
-                else { results.innerHTML=items.map(function(it){return '<div style=\"padding:0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(218,165,32,0.15);border-radius:10px;\">'+it.html+'</div>';}).join('');
+                else { results.innerHTML=items.map(function(it){return '<div style=\"padding:0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(218,165,32,0.15);border-radius:10px;\">'+it.php+'</div>';}).join('');
                     var btns=Array.from(results.querySelectorAll('[data-scroll]')); var targets=items.filter(function(i){return i.scrollTo;}).map(function(i){return i.scrollTo;});
                     btns.forEach(function(b,i){ var t=targets[i]; b&&b.addEventListener('click', function(){ t&&t.scrollIntoView({behavior:'smooth', block:'center'}); closeSearch(); }); }); }
             }
@@ -228,4 +231,5 @@
     </script>
 </body>
 </html>
+
 

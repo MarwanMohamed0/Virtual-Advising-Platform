@@ -229,6 +229,61 @@ nav {
     box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);
 }
 
+/* User Menu */
+.user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-greeting {
+    color: #DAA520;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.6rem 1rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.user-greeting:hover {
+    background: rgba(218, 165, 32, 0.1);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    min-width: 150px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.user-menu:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.user-dropdown a:hover {
+    background: rgba(218, 165, 32, 0.1);
+    color: #DAA520;
+}
+
 /* Hero Section */
 .hero {
     position: relative;

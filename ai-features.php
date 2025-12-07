@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - ai-features
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -798,10 +801,10 @@
             <li class="nav-item">
                 <a href="#solutions">Solutions ▾</a>
                 <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
+                    <a href="solutions-virtual-advising.php">Virtual Advising</a>
+                    <a href="solutions-student-success.php">Student Success</a>
+                    <a href="solutions-academic-planning.php">Academic Planning</a>
+                    <a href="solutions-career-services.php">Career Services</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -833,8 +836,8 @@
         </ul>
         <div class="nav-right">
             <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='index.html'">Back to Home</button>
+            <button class="login-btn" onclick="window.location.href='login.php'">Login</button>
+            <button class="demo-btn" onclick="window.location.href='index.php'">Back to Home</button>
         </div>
     </nav>
 
@@ -1027,7 +1030,7 @@
         <h2>Ready to Experience AI-Powered Advising?</h2>
         <p>See how MashouraX's advanced AI can transform student support at your institution</p>
         <div class="cta-buttons">
-            <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
+            <button class="primary-btn" onclick="window.location.href='trial.php'">Start Free Trial →</button>
             <button class="secondary-btn" onclick="openModal()">Schedule AI Demo</button>
         </div>
     </section>
@@ -1145,28 +1148,28 @@
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul class="footer-links">
-                    <li><a href="solutions-virtual-advising.html">Virtual Advising</a></li>
-                    <li><a href="solutions-student-success.html">Student Success</a></li>
-                    <li><a href="solutions-academic-planning.html">Academic Planning</a></li>
-                    <li><a href="solutions-career-services.html">Career Services</a></li>
+                    <li><a href="solutions-virtual-advising.php">Virtual Advising</a></li>
+                    <li><a href="solutions-student-success.php">Student Success</a></li>
+                    <li><a href="solutions-academic-planning.php">Academic Planning</a></li>
+                    <li><a href="solutions-career-services.php">Career Services</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="documentation.html">Documentation</a></li>
-                    <li><a href="case-studies.html">Case Studies</a></li>
-                    <li><a href="webinars.html">Webinars</a></li>
-                    <li><a href="help-center.html">Help Center</a></li>
+                    <li><a href="documentation.php">Documentation</a></li>
+                    <li><a href="case-studies.php">Case Studies</a></li>
+                    <li><a href="webinars.php">Webinars</a></li>
+                    <li><a href="help-center.php">Help Center</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="solutions-career-services.html">Careers</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="solutions-career-services.php">Careers</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="privacy.php">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>

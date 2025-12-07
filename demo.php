@@ -1,3 +1,6 @@
+<?php
+// MashouraX Virtual Advising Platform - demo
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
