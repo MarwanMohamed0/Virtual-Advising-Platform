@@ -661,36 +661,7 @@
 <body>
     <div class="bg-animation"></div>
 
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <div class="top-bar-item">
-                <span>📧</span> support@mashourax.com
-            </div>
-            <div class="top-bar-item">
-                <span>📞</span> +1 (555) 123-4567
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <a href="#" class="top-bar-link">About</a>
-            <a href="#" class="top-bar-link">Blog</a>
-            <a href="#" class="top-bar-link">Careers</a>
-        </div>
-    </div>
-
-    <nav>
-        <div class="logo" onclick="window.location.href='index.php'">MashouraX</div>
-        <ul class="nav-center">
-            <li class="nav-item"><a href="index.php">Home</a></li>
-            <li class="nav-item"><a href="#mission">Mission</a></li>
-            <li class="nav-item"><a href="#team">Team</a></li>
-            <li class="nav-item"><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="nav-right">
-            <button class="search-btn">🔍 Search</button>
-            <button class="login-btn">Login</button>
-            <button class="demo-btn">Request Demo</button>
-        </div>
-    </nav>
+    <?php require_once 'includes/navigation.php'; ?>
 
     <section class="hero">
         <div class="hero-badge">

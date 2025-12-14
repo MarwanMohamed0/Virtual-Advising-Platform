@@ -17,59 +17,7 @@
     <div class="particle"></div>
     <div class="particle"></div>
 
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <div class="top-bar-item"><span>📧</span> support@mashourax.com</div>
-            <div class="top-bar-item"><span>📞</span> +1 (555) 123-4567</div>
-        </div>
-        <div class="top-bar-right">
-            <a href="index.php#about" class="top-bar-link">About</a>
-            <a href="index.php#blog" class="top-bar-link">Blog</a>
-            <a href="index.php#careers" class="top-bar-link">Careers</a>
-        </div>
-    </div>
-
-    <nav>
-        <div class="logo" onclick="window.location.href='index.php'">MashouraX</div>
-        <ul class="nav-center">
-            <li class="nav-item">
-                <a href="#solutions">Solutions ▾</a>
-                <div class="dropdown">
-                    <a href="solutions-virtual-advising.php">Virtual Advising</a>
-                    <a href="solutions-student-success.php">Student Success</a>
-                    <a href="solutions-academic-planning.php">Academic Planning</a>
-                    <a href="solutions-career-services.php">Career Services</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a href="#features">Features ▾</a>
-                <div class="dropdown">
-                    <a href="#">AI-Powered Support</a>
-                    <a href="#">Analytics Dashboard</a>
-                    <a href="#">24/7 Chat Support</a>
-                    <a href="#">Mobile App</a>
-                </div>
-            </li>  
-            
-            <li class="nav-item">
-                <a href="#">Resources ▾</a>
-                <div class="dropdown">
-                    <a href="case-studies.php">Case Studies</a>
-                    <a href="documentation.php">Documentation</a>
-                    <a href="webinars.php">Webinars</a>
-                    <a href="help-center.php">Help Center</a>
-                </div>
-            </li>
-            
-            <li class="nav-item"><a href="index.php#pricing">Pricing</a></li>
-            <li class="nav-item"><a href="index.php#security">Security</a></li>
-        </ul>
-        <div class="nav-right">
-            <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.php'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='demo.php'">Request Demo</button>
-        </div>
-    </nav>
+    <?php require_once 'includes/navigation.php'; ?>
 
     <section class="features" style="padding-top: 180px;">
         <div class="section-header">

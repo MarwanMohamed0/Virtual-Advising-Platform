@@ -52,71 +52,7 @@ try {
     <div class="particle"></div>
     <div class="particle"></div>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <div class="top-bar-item">
-                <span>📧</span> support@mashourax.com
-            </div>
-            <div class="top-bar-item">
-                <span>📞</span> +20 (012) 707 23373
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <a href="about.html" class="top-bar-link">About</a>
-            <a href="#" class="top-bar-link">Blog</a>
-            <a href="#" class="top-bar-link">Careers</a>
-        </div>
-    </div>
-
-    <!-- Main Navigation -->
-    <nav>
-        <div class="logo"><a href="index.html">MashouraX</a></div>
-        <ul class="nav-center">
-            <li class="nav-item">
-                <a href="#solutions">Solutions ▾</a>
-                <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
-                </div>
-            </li>
-           
-            <li class="nav-item">
-                <a href="#features">Features ▾</a>
-                <div class="dropdown">
-                    <a href="ai-features.html">AI-Powered Support</a>
-                    <a href="analytics-dashboard.html">Analytics Dashboard</a>
-                    <a href="chat-support.php">24/7 Chat Support</a>
-                    <a href="mobile.html">Mobile App</a>
-                </div>
-           
-            </li> 
-            <li class="nav-item">
-                <a href="#resources">Resources ▾</a>
-                <div class="dropdown">
-                    <a href="case-studies.html">Case Studies</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="webinars.html">Webinars</a>
-                    <a href="help-center.html">Help Center</a>
-                </div>
-            </li>
-            
-           
-            <li class="nav-item">
-                <a href="#pricing">Pricing</a>
-            </li>
-            <li class="nav-item">
-                <a href="#security">Security</a>
-            </li>
-        </ul>
-        <div class="nav-right">
-            <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
-        </div>
-    </nav>
+    <?php require_once 'includes/navigation.php'; ?>
 
     <!-- Hero Section -->
     <section class="hero" id="home">

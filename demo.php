@@ -18,67 +18,7 @@
     <div class="particle"></div>
     <div class="particle"></div>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <div class="top-bar-item">
-                <span>📧</span> support@mashourax.com
-            </div>
-            <div class="top-bar-item">
-                <span>📞</span> +1 (555) 123-4567
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <a href="#" class="top-bar-link">About</a>
-            <a href="#" class="top-bar-link">Blog</a>
-            <a href="#" class="top-bar-link">Careers</a>
-        </div>
-    </div>
-
-    <!-- Main Navigation -->
-    <nav>
-        <div class="logo"><a href="index.html">MashouraX</a></div>
-        <ul class="nav-center">
-            <li class="nav-item">
-                <a href="index.html#solutions">Solutions ▾</a>
-                <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a href="index.html#features">Features ▾</a>
-                <div class="dropdown">
-                    <a href="ai-features.html">AI-Powered Support</a>
-                    <a href="analytics-dashboard.html">Analytics Dashboard</a>
-                    <a href="#">24/7 Chat Support</a>
-                    <a href="#">Mobile App</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a href="#resources">Resources ▾</a>
-                <div class="dropdown">
-                    <a href="case-studies.html">Case Studies</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="webinars.html">Webinars</a>
-                    <a href="help-center.html">Help Center</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a href="index.html#pricing">Pricing</a>
-            </li>
-            <li class="nav-item">
-                <a href="index.html#security">Security</a>
-            </li>
-        </ul>
-        <div class="nav-right">
-            <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn">Request Demo</button>
-        </div>
-    </nav>
+    <?php require_once 'includes/navigation.php'; ?>
 
     <!-- Demo Hero Section -->
     <section class="hero" style="min-height: auto; padding-top: 140px; padding-bottom: 60px;">
@@ -142,8 +82,8 @@
         <h2>Ready to Get Started?</h2>
         <p>Start your free trial today and experience the power of AI-driven student success.</p>
         <div class="hero-buttons">
-            <button class="primary-btn" onclick="window.location.href='trial.html'">Start Free Trial →</button>
-            <button class="secondary-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+            <button class="primary-btn" onclick="window.location.href='trial.php'">Start Free Trial →</button>
+            <button class="secondary-btn" onclick="window.location.href='index.php'">← Back to Home</button>
         </div>
     </section>
 

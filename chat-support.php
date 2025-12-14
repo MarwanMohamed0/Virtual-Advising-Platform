@@ -1,74 +1,11 @@
 <?php
-session_start();
-
-// Initialize chat history
-if (!isset($_SESSION['chat_history'])) {
-    $_SESSION['chat_history'] = [
-        ['type' => 'bot', 'message' => 'Hello! Welcome to MashouraX support. How can I help you today?', 'time' => date('H:i')]
-    ];
-}
-
-// Handle AJAX requests
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    header('Content-Type: application/json');
-    
-    if ($_POST['action'] === 'send_message') {
-        $userMessage = trim($_POST['message'] ?? '');
-        
-        if (!empty($userMessage)) {
-            $_SESSION['chat_history'][] = ['type' => 'user', 'message' => htmlspecialchars($userMessage), 'time' => date('H:i')];
-            
-            $botResponse = getBotResponse($userMessage);
-            $_SESSION['chat_history'][] = ['type' => 'bot', 'message' => $botResponse, 'time' => date('H:i')];
-            
-            echo json_encode(['success' => true, 'response' => $botResponse, 'time' => date('H:i')]);
-        }
-        exit;
-    }
-    
-    if ($_POST['action'] === 'clear_history') {
-        $_SESSION['chat_history'] = [['type' => 'bot', 'message' => 'Chat cleared. How can I help you?', 'time' => date('H:i')]];
-        echo json_encode(['success' => true]);
-        exit;
-    }
-}
-
-function getBotResponse($message) {
-    $lowerMsg = strtolower($message);
-    
-    if (strpos($lowerMsg, 'account') !== false || strpos($lowerMsg, 'login') !== false) {
-        return "I can help you with account issues! Could you please specify what problem you're experiencing? For immediate assistance, you can reset your password using the 'Forgot Password' link.";
-    }
-    
-    if (strpos($lowerMsg, 'pricing') !== false || strpos($lowerMsg, 'plan') !== false || strpos($lowerMsg, 'cost') !== false) {
-        return "We offer three plans:<br><br><strong>Basic:</strong> EGP 2,999/month - Up to 500 students<br><strong>Professional:</strong> EGP 5,999/month - Up to 2,000 students<br><strong>Enterprise:</strong> EGP 12,999/month - Unlimited students<br><br>All include a 30-day free trial!";
-    }
-    
-    if (strpos($lowerMsg, 'integrate') !== false || strpos($lowerMsg, 'setup') !== false || strpos($lowerMsg, 'technical') !== false) {
-        return "Our technical team can help with integration! We support SIS, LMS, and various administrative systems. Would you like me to connect you with a technical specialist?";
-    }
-    
-    if (strpos($lowerMsg, 'demo') !== false) {
-        return "Great! I'd be happy to schedule a demo. You can book a time slot at our demo page, or have our sales team contact you directly. Which would you prefer?";
-    }
-    
-    if (strpos($lowerMsg, 'ai') !== false || strpos($lowerMsg, 'features') !== false) {
-        return "MashouraX uses advanced AI with:<br><br>✓ 850+ Vetted Questions<br>✓ Instant Chat Support<br>✓ Smart Analytics<br>✓ Degree Planning<br>✓ 24/7 Availability<br><br>Would you like details on any specific feature?";
-    }
-    
-    if (strpos($lowerMsg, 'contact') !== false || strpos($lowerMsg, 'email') !== false || strpos($lowerMsg, 'phone') !== false) {
-        return "You can reach us at:<br><br>📧 support@mashourax.com<br>📞 +20 (012) 707 23373<br>💬 Chat: Right here!<br><br>Our support team is available 24/7.";
-    }
-    
-    if (strpos($lowerMsg, 'hello') !== false || strpos($lowerMsg, 'hi') !== false || strpos($lowerMsg, 'hey') !== false) {
-        return "Hello! 👋 Welcome to MashouraX. I'm here to help answer your questions about our AI-powered virtual advising platform. What would you like to know?";
-    }
-    
-    if (strpos($lowerMsg, 'thank') !== false) {
-        return "You're welcome! 😊 Is there anything else I can help you with today?";
-    }
-    
-    return "Thank you for your message! I'm here to help. You can ask me about pricing, features, technical support, or schedule a demo. What would you like to know?";
+// MashouraX Virtual Advising Platform - chat-support
+try {
+    require_once 'includes/auth.php';
+    $currentUser = getCurrentUser();
+} catch (Exception $e) {
+    $currentUser = null;
+    error_log("Auth error: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -76,310 +13,169 @@ function getBotResponse($message) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MashouraX - 24/7 Chat Support</title>
+    <title>24/7 Chat Support - MashouraX Virtual Advising Platform</title>
     <link rel="stylesheet" href="index.css">
     <style>
-        .chat-section {
+        .chat-page-section {
+            padding: 180px 5% 100px;
             position: relative;
-            padding: 180px 5% 8rem;
             z-index: 1;
-            min-height: 100vh;
-        }
-
-        .chat-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 2rem;
-            height: 700px;
-        }
-
-        .chat-sidebar {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(218, 165, 32, 0.15);
-            border-radius: 20px;
-            padding: 1.5rem;
-            overflow-y: auto;
-        }
-
-        .sidebar-header {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #DAA520;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
-        }
-
-        .quick-action {
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(218, 165, 32, 0.1);
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quick-action:hover {
-            background: rgba(218, 165, 32, 0.1);
-            border-color: #DAA520;
-            transform: translateX(5px);
-        }
-
-        .quick-action h4 {
-            font-size: 0.95rem;
-            color: #fff;
-            margin-bottom: 0.3rem;
-        }
-
-        .quick-action p {
-            font-size: 0.8rem;
-            color: #999;
-        }
-
-        .chat-main {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(218, 165, 32, 0.15);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
         }
 
         .chat-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 4rem;
         }
 
-        .chat-header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .chat-header .section-label {
+            color: #DAA520;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
         }
 
-        .agent-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .chat-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, #DAA520);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chat-header p {
+            font-size: 1.2rem;
+            color: #aaa;
+            line-height: 1.8;
+        }
+
+        .chat-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+        }
+
+        .chat-feature-card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .chat-feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(218, 165, 32, 0.5);
+            box-shadow: 0 20px 40px rgba(218, 165, 32, 0.1);
+        }
+
+        .chat-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chat-feature-card h3 {
             font-size: 1.5rem;
-        }
-
-        .agent-info h3 {
-            font-size: 1.1rem;
+            margin-bottom: 1rem;
             color: #fff;
-            margin-bottom: 0.2rem;
         }
 
-        .agent-info p {
-            font-size: 0.85rem;
+        .chat-feature-card p {
+            color: #aaa;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .support-benefits-section {
+            padding: 100px 5%;
+            position: relative;
+            z-index: 1;
+            background: rgba(218, 165, 32, 0.02);
+        }
+
+        .benefits-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefits-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .benefits-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .benefits-header p {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-item {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            border-color: rgba(218, 165, 32, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .benefit-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
             color: #DAA520;
         }
 
-        .clear-chat-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(255, 0, 0, 0.1);
-            color: #ff6b6b;
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .benefit-item ul {
+            list-style: none;
+            padding: 0;
         }
 
-        .clear-chat-btn:hover {
-            background: rgba(255, 0, 0, 0.2);
-            border-color: #ff6b6b;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .message {
-            display: flex;
-            gap: 1rem;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message.user {
-            flex-direction: row-reverse;
-        }
-
-        .message-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            border-radius: 50%;
+        .benefit-item ul li {
+            padding: 0.6rem 0;
+            color: #ccc;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            gap: 0.8rem;
         }
 
-        .message.user .message-avatar {
-            background: rgba(255, 255, 255, 0.1);
+        .benefit-item ul li:last-child {
+            border-bottom: none;
         }
 
-        .message-content {
-            max-width: 70%;
-        }
-
-        .message-bubble {
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(218, 165, 32, 0.2);
-            border-radius: 15px;
-            color: #fff;
-            line-height: 1.6;
-        }
-
-        .message.user .message-bubble {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.2), rgba(218, 165, 32, 0.1));
-            border-color: #DAA520;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: #666;
-            margin-top: 0.5rem;
-            padding: 0 0.5rem;
-        }
-
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(218, 165, 32, 0.2);
-            border-radius: 15px;
-            width: fit-content;
-        }
-
-        .typing-indicator.active {
-            display: flex;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #DAA520;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typing {
-            0%, 60%, 100% {
-                transform: translateY(0);
-            }
-            30% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .chat-input-container {
-            padding: 1.5rem;
-            border-top: 1px solid rgba(218, 165, 32, 0.2);
-            display: flex;
-            gap: 1rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(218, 165, 32, 0.2);
-            border-radius: 50px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input:focus {
-            border-color: #DAA520;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .send-btn {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            border: none;
-            border-radius: 50%;
-            color: #000;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .send-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);
-        }
-
-        .send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        @media (max-width: 1024px) {
-            .chat-container {
-                grid-template-columns: 1fr;
-                height: auto;
-            }
-
-            .chat-sidebar {
-                height: auto;
-            }
-
-            .chat-main {
-                height: 600px;
-            }
+        .benefit-item ul li::before {
+            content: '✓';
+            color: #DAA520;
+            font-weight: 700;
         }
 
         @media (max-width: 768px) {
-            .message-content {
-                max-width: 85%;
+            .chat-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .chat-features-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -393,142 +189,96 @@ function getBotResponse($message) {
     <div class="particle"></div>
     <div class="particle"></div>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <div class="top-bar-item">
-                <span>📧</span> support@mashourax.com
-            </div>
-            <div class="top-bar-item">
-                <span>📞</span> +20 (012) 707 23373
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <a href="about.html" class="top-bar-link">About</a>
-            <a href="#" class="top-bar-link">Blog</a>
-            <a href="#" class="top-bar-link">Careers</a>
-        </div>
-    </div>
+    <?php require_once 'includes/navigation.php'; ?>
 
-    <!-- Main Navigation -->
-    <nav>
-        <div class="logo"><a href="index.html">MashouraX</a></div>
-        <ul class="nav-center">
-            <li class="nav-item">
-                <a href="#solutions">Solutions ▾</a>
-                <div class="dropdown">
-                    <a href="solutions-virtual-advising.html">Virtual Advising</a>
-                    <a href="solutions-student-success.html">Student Success</a>
-                    <a href="solutions-academic-planning.html">Academic Planning</a>
-                    <a href="solutions-career-services.html">Career Services</a>
-                </div>
-            </li>
-           
-            <li class="nav-item">
-                <a href="#features">Features ▾</a>
-                <div class="dropdown">
-                    <a href="ai-features.html">AI-Powered Support</a>
-                    <a href="analytics-dashboard.html">Analytics Dashboard</a>
-                    <a href="chat-support.php">24/7 Chat Support</a>
-                    <a href="mobile.html">Mobile App</a>
-                </div>
-           
-            </li> 
-            <li class="nav-item">
-                <a href="#resources">Resources ▾</a>
-                <div class="dropdown">
-                    <a href="case-studies.html">Case Studies</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="webinars.html">Webinars</a>
-                    <a href="help-center.html">Help Center</a>
-                </div>
-            </li>
-            
-           
-            <li class="nav-item">
-                <a href="#pricing">Pricing</a>
-            </li>
-            <li class="nav-item">
-                <a href="#security">Security</a>
-            </li>
-        </ul>
-        <div class="nav-right">
-            <button class="search-btn">🔍 Search</button>
-            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-            <button class="demo-btn" onclick="window.location.href='demo.html'">Request Demo</button>
-        </div>
-    </nav>
-
-    <!-- Chat Section -->
-    <section class="chat-section">
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <div class="hero-badge" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.5rem; background: rgba(218, 165, 32, 0.1); border: 1px solid rgba(218, 165, 32, 0.3); border-radius: 50px; color: #DAA520; font-size: 0.85rem; margin-bottom: 1.5rem; font-weight: 600;">
-                <span>💬</span> PHP-Powered AI Support
-            </div>
-            <h1 style="font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; color: #fff;">How Can We Help You?</h1>
-            <p style="font-size: 1.15rem; color: #aaa; max-width: 700px; margin: 0 auto;">Chat with our AI-powered support system. Your conversation is saved and processed server-side with PHP.</p>
+    <!-- Chat Support Header Section -->
+    <section class="chat-page-section">
+        <div class="chat-header">
+            <div class="section-label">24/7 Chat Support</div>
+            <h1>Always-On Student Support</h1>
+            <p>Provide instant, accurate answers to student questions around the clock. Our AI-powered chat support never sleeps, ensuring students get help whenever they need it, day or night.</p>
         </div>
 
-        <div class="chat-container">
-            <div class="chat-sidebar">
-                <div class="sidebar-header">Quick Actions</div>
-                <div class="quick-action" onclick="sendQuickMessage('I need help with my account')">
-                    <h4>👤 Account Help</h4>
-                    <p>Issues with login or settings</p>
+        <div class="chat-features-grid">
+            <div class="chat-feature-card">
+                <div class="chat-icon">⏰</div>
+                <h3>24/7 Availability</h3>
+                <p>Students can get help at any time, whether it's 2 AM or during peak registration periods. No more waiting for business hours or dealing with busy phone lines.</p>
+            </div>
+            <div class="chat-feature-card">
+                <div class="chat-icon">⚡</div>
+                <h3>Instant Responses</h3>
+                <p>Get answers in seconds, not hours or days. Our AI assistant responds immediately to common questions, reducing student frustration and improving satisfaction.</p>
+            </div>
+            <div class="chat-feature-card">
+                <div class="chat-icon">💬</div>
+                <h3>Natural Conversations</h3>
+                <p>Students can ask questions naturally, just like chatting with a human advisor. Our AI understands context and provides conversational, helpful responses.</p>
+            </div>
+            <div class="chat-feature-card">
+                <div class="chat-icon">🔄</div>
+                <h3>Seamless Escalation</h3>
+                <p>When students need human assistance, the conversation seamlessly transfers to a live advisor with full context, ensuring continuity and no repeated explanations.</p>
+            </div>
+            <div class="chat-feature-card">
+                <div class="chat-icon">📱</div>
+                <h3>Multi-Platform Access</h3>
+                <p>Students can access chat support from any device - desktop, tablet, or mobile. Consistent experience across all platforms with responsive design.</p>
+            </div>
+            <div class="chat-feature-card">
+                <div class="chat-icon">📝</div>
+                <h3>Conversation History</h3>
+                <p>All conversations are saved and accessible. Students can review past interactions, and advisors can see full context when taking over a conversation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Benefits Section -->
+    <section class="support-benefits-section">
+        <div class="benefits-container">
+            <div class="benefits-header">
+                <h2>Benefits of 24/7 Chat Support</h2>
+                <p>Transform your student support operations</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <h3>For Students</h3>
+                    <ul>
+                        <li>Instant answers to questions</li>
+                        <li>Available anytime, anywhere</li>
+                        <li>No phone wait times</li>
+                        <li>Consistent, accurate information</li>
+                    </ul>
                 </div>
-                <div class="quick-action" onclick="sendQuickMessage('Tell me about pricing plans')">
-                    <h4>💰 Pricing Info</h4>
-                    <p>Plans and billing questions</p>
+                <div class="benefit-item">
+                    <h3>For Institutions</h3>
+                    <ul>
+                        <li>Reduced advisor workload</li>
+                        <li>Lower support costs</li>
+                        <li>Improved student satisfaction</li>
+                        <li>Better resource allocation</li>
+                    </ul>
                 </div>
-                <div class="quick-action" onclick="sendQuickMessage('How do I integrate MashouraX?')">
-                    <h4>🔧 Technical Support</h4>
-                    <p>Integration and setup help</p>
-                </div>
-                <div class="quick-action" onclick="sendQuickMessage('I want to schedule a demo')">
-                    <h4>📅 Schedule Demo</h4>
-                    <p>Book a live demonstration</p>
-                </div>
-                <div class="quick-action" onclick="sendQuickMessage('Tell me about AI features')">
-                    <h4>🤖 AI Features</h4>
-                    <p>Learn about our AI capabilities</p>
+                <div class="benefit-item">
+                    <h3>For Advisors</h3>
+                    <ul>
+                        <li>Focus on complex issues</li>
+                        <li>Reduced repetitive questions</li>
+                        <li>Full conversation context</li>
+                        <li>Better work-life balance</li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="chat-main">
-                <div class="chat-header">
-                    <div class="chat-header-left">
-                        <div class="agent-avatar">🤖</div>
-                        <div class="agent-info">
-                            <h3>PHP AI Assistant</h3>
-                            <p>● Online - Powered by PHP Backend</p>
-                        </div>
-                    </div>
-                    <button class="clear-chat-btn" onclick="clearChat()">🗑️ Clear Chat</button>
-                </div>
-
-                <div class="chat-messages" id="chatMessages">
-                    <?php foreach ($_SESSION['chat_history'] as $msg): ?>
-                        <div class="message <?php echo $msg['type'] === 'user' ? 'user' : ''; ?>">
-                            <div class="message-avatar"><?php echo $msg['type'] === 'user' ? '👤' : '🤖'; ?></div>
-                            <div class="message-content">
-                                <div class="message-bubble"><?php echo $msg['message']; ?></div>
-                                <div class="message-time"><?php echo $msg['time']; ?></div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-
-                <div class="chat-input-container">
-                    <input 
-                        type="text" 
-                        class="chat-input" 
-                        id="chatInput"
-                        placeholder="Type your message..."
-                        onkeypress="handleKeyPress(event)"
-                    >
-                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
-                </div>
-            </div>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Provide 24/7 Support?</h2>
+        <p>Start offering round-the-clock assistance to your students today.</p>
+        <div class="hero-buttons">
+            <button class="primary-btn" onclick="window.location.href='trial.php'">Start Free Trial →</button>
+            <button class="secondary-btn" onclick="window.location.href='demo.php'">Schedule a Demo</button>
         </div>
     </section>
 
@@ -578,65 +328,6 @@ function getBotResponse($message) {
         </div>
     </footer>
 
-    <script>
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                input.value = '';
-                document.getElementById('sendBtn').disabled = true;
-                
-                fetch('', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'action=send_message&message=' + encodeURIComponent(message)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    }
-                })
-                .catch(error => console.error('Error:', error))
-                .finally(() => {
-                    document.getElementById('sendBtn').disabled = false;
-                });
-            }
-        }
-
-        function sendQuickMessage(message) {
-            document.getElementById('chatInput').value = message;
-            sendMessage();
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        function clearChat() {
-            if (confirm('Are you sure you want to clear the chat history?')) {
-                fetch('', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'action=clear_history'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    }
-                });
-            }
-        }
-
-        // Auto scroll to bottom
-        const chatMessages = document.getElementById('chatMessages');
-        if (chatMessages) {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    </script>
+    <script src="cookies-loader.js"></script>
 </body>
 </html>

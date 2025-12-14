@@ -68,7 +68,7 @@ if ($currentUser) {
             <div class="dropdown">
                 <a href="ai-features.php">AI-Powered Support</a>
                 <a href="analytics-dashboard.php">Analytics Dashboard</a>
-                <a href="#">24/7 Chat Support</a>
+                <a href="chat-support.php">24/7 Chat Support</a>
                 <a href="mobile.php">Mobile App</a>
             </div>
         </li> 
@@ -84,10 +84,10 @@ if ($currentUser) {
         
        
         <li class="nav-item">
-            <a href="#pricing">Pricing</a>
+            <a href="pricing.php">Pricing</a>
         </li>
         <li class="nav-item">
-            <a href="#security">Security</a>
+            <a href="security.php">Security</a>
         </li>
     </ul>
     <div class="nav-right">

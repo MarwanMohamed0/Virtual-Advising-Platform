@@ -1,5 +1,14 @@
 <?php
 // MashouraX Virtual Advising Platform - contact
+try {
+    require_once 'includes/auth.php';
+    // Get current user if logged in
+    $currentUser = getCurrentUser();
+} catch (Exception $e) {
+    // If database connection fails, set currentUser to null
+    $currentUser = null;
+    error_log("Auth error: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,174 +16,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MashouraX - Contact Us</title>
+    <link rel="stylesheet" href="index.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000;
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: linear-gradient(135deg, #000 0%, #0a0a0a 50%, #000 100%);
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(218, 165, 32, 0.08) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: moveGrid 25s linear infinite;
-        }
-
-        @keyframes moveGrid {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(40px, 40px); }
-        }
-
-        .top-bar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1001;
-            padding: 0.8rem 5%;
-            background: rgba(0, 0, 0, 0.95);
-            border-bottom: 1px solid rgba(218, 165, 32, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-        }
-
-        .top-bar-left {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .top-bar-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #999;
-        }
-
-        .top-bar-item span {
-            color: #DAA520;
-        }
-
-        .top-bar-right {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .top-bar-link {
-            color: #999;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .top-bar-link:hover {
-            color: #DAA520;
-        }
-
-        nav {
-            position: fixed;
-            top: 45px;
-            width: 100%;
-            z-index: 1000;
-            padding: 1.2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
-            cursor: pointer;
-        }
-
-        .nav-center {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-item > a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item > a:hover {
-            color: #DAA520;
-        }
-
-        .nav-right {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .search-btn, .login-btn {
-            padding: 0.6rem 1.2rem;
-            background: transparent;
-            color: #fff;
-            border: 1px solid rgba(218, 165, 32, 0.3);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover, .login-btn:hover {
-            background: rgba(218, 165, 32, 0.1);
-            border-color: #DAA520;
-        }
-
-        .demo-btn {
-            padding: 0.7rem 1.8rem;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .demo-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);
-        }
 
         .hero {
             position: relative;
@@ -472,10 +315,6 @@
                 font-size: 3.5rem;
             }
 
-            .nav-center {
-                display: none;
-            }
-
             .footer-content {
                 grid-template-columns: 1fr 1fr;
             }
@@ -494,37 +333,14 @@
 </head>
 <body>
     <div class="bg-animation"></div>
+    
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
 
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <div class="top-bar-item">
-                <span>📧</span> support@mashourax.com
-            </div>
-            <div class="top-bar-item">
-                <span>📞</span> +1 (555) 123-4567
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <a href="about.php" class="top-bar-link">About</a>
-            <a href="#" class="top-bar-link">Blog</a>
-            <a href="#" class="top-bar-link">Careers</a>
-        </div>
-    </div>
-
-    <nav>
-        <div class="logo" onclick="window.location.href='index.php'">MashouraX</div>
-        <ul class="nav-center">
-            <li class="nav-item"><a href="index.php">Home</a></li>
-            <li class="nav-item"><a href="about.php">About</a></li>
-            <li class="nav-item"><a href="trial.php">Pricing</a></li>
-            <li class="nav-item"><a href="contact.php">Contact</a></li>
-        </ul>
-        <div class="nav-right">
-            <button class="search-btn">🔍 Search</button>
-            <button class="login-btn">Login</button>
-            <button class="demo-btn">Request Demo</button>
-        </div>
-    </nav>
+    <?php require_once 'includes/navigation.php'; ?>
 
     <section class="hero">
         <div class="hero-badge">
@@ -568,25 +384,27 @@
             </div>
 
             <div class="contact-form">
-                <form>
+                <form id="contactForm">
+                    <div id="formMessage" style="display: none; padding: 1rem; margin-bottom: 1.5rem; border-radius: 10px; text-align: center;"></div>
+                    
                     <div class="form-group">
                         <label>Full Name *</label>
-                        <input type="text" required placeholder="Enter your full name">
+                        <input type="text" name="full_name" id="full_name" required placeholder="Enter your full name">
                     </div>
                     
                     <div class="form-group">
                         <label>Email Address *</label>
-                        <input type="email" required placeholder="Enter your email">
+                        <input type="email" name="email" id="email" required placeholder="Enter your email">
                     </div>
                     
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" placeholder="Enter your phone number">
+                        <input type="tel" name="phone" id="phone" placeholder="Enter your phone number">
                     </div>
                     
                     <div class="form-group">
                         <label>Subject *</label>
-                        <select required>
+                        <select name="subject" id="subject" required>
                             <option value="">Select a subject</option>
                             <option value="general">General Inquiry</option>
                             <option value="sales">Sales</option>
@@ -598,10 +416,10 @@
                     
                     <div class="form-group">
                         <label>Message *</label>
-                        <textarea required placeholder="Tell us how we can help you..."></textarea>
+                        <textarea name="message" id="message" required placeholder="Tell us how we can help you..."></textarea>
                     </div>
                     
-                    <button type="submit" class="submit-btn">Send Message</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
                 </form>
             </div>
         </div>
@@ -661,5 +479,76 @@
             <p>&copy; 2025 MashouraX. All rights reserved. Built with excellence for student success.</p>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('formMessage');
+            const originalBtnText = submitBtn.textContent;
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            messageDiv.style.display = 'none';
+            
+            // Get form data
+            const formData = {
+                full_name: document.getElementById('full_name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value.trim()
+            };
+            
+            try {
+                const response = await fetch('backend/api/index.php/contact/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show success message
+                    messageDiv.style.display = 'block';
+                    messageDiv.style.background = 'rgba(34, 197, 94, 0.1)';
+                    messageDiv.style.border = '1px solid rgba(34, 197, 94, 0.3)';
+                    messageDiv.style.color = '#22c55e';
+                    messageDiv.textContent = 'Thank you! Your message has been sent successfully. We\'ll get back to you soon.';
+                    
+                    // Reset form
+                    form.reset();
+                } else {
+                    // Show error message
+                    messageDiv.style.display = 'block';
+                    messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+                    messageDiv.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+                    messageDiv.style.color = '#ef4444';
+                    messageDiv.textContent = data.message || 'Failed to send message. Please try again.';
+                }
+            } catch (error) {
+                // Show error message
+                messageDiv.style.display = 'block';
+                messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+                messageDiv.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+                messageDiv.style.color = '#ef4444';
+                messageDiv.textContent = 'Network error. Please check your connection and try again.';
+                console.error('Error:', error);
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+                
+                // Scroll to message
+                messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    </script>
 </body>
 </html>

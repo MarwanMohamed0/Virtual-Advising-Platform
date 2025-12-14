@@ -1,0 +1,23 @@
+# Apache configuration for backend API
+# Enable rewrite engine
+RewriteEngine On
+
+# Allow access to API index
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route API requests to index.php
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+
+# Security: Prevent direct access to sensitive files
+<FilesMatch "\.(php|sql|md)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Set default charset
+AddDefaultCharset UTF-8
+
