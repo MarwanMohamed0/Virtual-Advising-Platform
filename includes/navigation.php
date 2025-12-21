@@ -42,11 +42,6 @@ if ($currentUser) {
             <span>📞</span> +20 (012) 707 23373
         </div>
     </div>
-    <div class="top-bar-right">
-        <a href="about.php" class="top-bar-link">About</a>
-        <a href="#" class="top-bar-link">Blog</a>
-        <a href="#" class="top-bar-link">Careers</a>
-    </div>
 </div>
 
 <!-- Main Navigation -->
@@ -88,6 +83,9 @@ if ($currentUser) {
         </li>
         <li class="nav-item">
             <a href="security.php">Security</a>
+        </li>
+        <li class="nav-item">
+            <a href="about.php">About Us</a>
         </li>
     </ul>
     <div class="nav-right">
