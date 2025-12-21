@@ -600,6 +600,12 @@ try {
                     <p class="action-desc">View and submit assignments</p>
                 </div>
                 
+                <div class="action-card" onclick="window.location.href='chat.php'">
+                    <div class="action-icon">💬</div>
+                    <h3 class="action-title">AI Chat Assistant</h3>
+                    <p class="action-desc">Get instant help from our AI advisor</p>
+                </div>
+                
                 <div class="action-card" onclick="window.location.href='#'">
                     <div class="action-icon">🎯</div>
                     <h3 class="action-title">Goals & Planning</h3>

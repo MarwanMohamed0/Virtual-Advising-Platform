@@ -31,8 +31,10 @@ require_once __DIR__ . '/../controller/ContactController.php';
 $requestUri = $_SERVER['REQUEST_URI'];
 $scriptName = $_SERVER['SCRIPT_NAME'];
 
-// Remove script name from URI
-$path = str_replace(dirname($scriptName), '', $requestUri);
+// Remove the full script name (including index.php) from URI
+// Example: /Virtual-Advising-Platform/backend/api/index.php/chat/send
+// Should become: chat/send
+$path = str_replace($scriptName, '', $requestUri);
 $path = trim($path, '/');
 
 // Remove query string
@@ -41,9 +43,9 @@ $path = strtok($path, '?');
 // Split path into segments
 $segments = explode('/', $path);
 
-// Remove empty segments
+// Remove empty segments and filter out 'index.php' if it somehow remains
 $segments = array_filter($segments, function($segment) {
-    return !empty($segment);
+    return !empty($segment) && $segment !== 'index.php';
 });
 
 $segments = array_values($segments);
@@ -107,8 +109,12 @@ $routes = [
     'contact/stats' => ['ContactController', 'getStats'],
 ];
 
-// Build route key from segments
-$routeKey = implode('/', array_slice($segments, 0, 2));
+// Build route key from segments (need at least 2 segments)
+if (count($segments) >= 2) {
+    $routeKey = implode('/', array_slice($segments, 0, 2));
+} else {
+    $routeKey = '';
+}
 
 // Check if route exists
 if (isset($routes[$routeKey])) {
@@ -133,8 +139,17 @@ if (isset($routes[$routeKey])) {
         Response::error('Internal server error: ' . $e->getMessage(), 500);
     }
 } else {
-    // Route not found
-    Response::error('Endpoint not found', 404);
+    // Route not found - provide debug info in development
+    $debugInfo = [
+        'request_uri' => $requestUri,
+        'script_name' => $scriptName,
+        'path' => $path,
+        'segments' => $segments,
+        'route_key' => $routeKey,
+        'available_routes' => array_keys($routes)
+    ];
+    error_log("Route not found. Debug: " . json_encode($debugInfo));
+    Response::error('Endpoint not found: ' . $routeKey, 404);
 }
 ?>
 

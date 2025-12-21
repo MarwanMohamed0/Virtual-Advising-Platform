@@ -29,21 +29,26 @@ class ChatController extends BaseController {
             Response::error('Message cannot be empty', 400);
         }
         
-        $chatModel = new ChatModel();
-        
-        // Save user message
-        $chatModel->saveMessage($this->currentUser['id'], $message, 'user');
-        
-        // Get bot response
-        $botResponse = $chatModel->getBotResponse($message);
-        
-        // Save bot response
-        $chatModel->saveMessage($this->currentUser['id'], $botResponse, 'bot');
-        
-        Response::success([
-            'response' => $botResponse,
-            'time' => date('H:i')
-        ], 'Message sent successfully');
+        try {
+            $chatModel = new ChatModel();
+            
+            // Save user message
+            $chatModel->saveMessage($this->currentUser['id'], $message, 'user');
+            
+            // Get bot response (pass user ID for conversation history context)
+            $botResponse = $chatModel->getBotResponse($message, $this->currentUser['id']);
+            
+            // Save bot response
+            $chatModel->saveMessage($this->currentUser['id'], $botResponse, 'bot');
+            
+            Response::success([
+                'response' => $botResponse,
+                'time' => date('H:i')
+            ], 'Message sent successfully');
+        } catch (Exception $e) {
+            error_log("Chat error: " . $e->getMessage());
+            Response::error('Failed to process message: ' . $e->getMessage(), 500);
+        }
     }
     
     /**

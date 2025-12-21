@@ -97,6 +97,7 @@ if ($currentUser) {
                 <span class="user-greeting">Welcome, <?php echo htmlspecialchars($currentUser['first_name']); ?>!</span>
                 <div class="user-dropdown">
                     <a href="<?php echo $dashboardUrl; ?>">Dashboard</a>
+                    <a href="chat.php">💬 AI Chat</a>
                     <a href="profile.php">Profile</a>
                     <a href="logout.php">Logout</a>
                 </div>
