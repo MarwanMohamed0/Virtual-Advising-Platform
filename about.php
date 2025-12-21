@@ -1,5 +1,14 @@
 <?php
 // MashouraX Virtual Advising Platform - about
+try {
+    require_once 'includes/auth.php';
+    // Get current user if logged in
+    $currentUser = getCurrentUser();
+} catch (Exception $e) {
+    // If database connection fails, set currentUser to null
+    $currentUser = null;
+    error_log("Auth error: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,175 +16,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MashouraX - About Us</title>
+    <link rel="stylesheet" href="index.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000;
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: linear-gradient(135deg, #000 0%, #0a0a0a 50%, #000 100%);
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(218, 165, 32, 0.08) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: moveGrid 25s linear infinite;
-        }
-
-        @keyframes moveGrid {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(40px, 40px); }
-        }
-
-        .top-bar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1001;
-            padding: 0.8rem 5%;
-            background: rgba(0, 0, 0, 0.95);
-            border-bottom: 1px solid rgba(218, 165, 32, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-        }
-
-        .top-bar-left {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .top-bar-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #999;
-        }
-
-        .top-bar-item span {
-            color: #DAA520;
-        }
-
-        .top-bar-right {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .top-bar-link {
-            color: #999;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .top-bar-link:hover {
-            color: #DAA520;
-        }
-
-        nav {
-            position: fixed;
-            top: 45px;
-            width: 100%;
-            z-index: 1000;
-            padding: 1.2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
-            cursor: pointer;
-        }
-
-        .nav-center {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-item > a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item > a:hover {
-            color: #DAA520;
-        }
-
-        .nav-right {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .search-btn, .login-btn {
-            padding: 0.6rem 1.2rem;
-            background: transparent;
-            color: #fff;
-            border: 1px solid rgba(218, 165, 32, 0.3);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover, .login-btn:hover {
-            background: rgba(218, 165, 32, 0.1);
-            border-color: #DAA520;
-        }
-
-        .demo-btn {
-            padding: 0.7rem 1.8rem;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .demo-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);
-        }
-
+        /* Additional styles specific to about page */
         .hero {
             position: relative;
             padding: 180px 5% 100px;
@@ -531,96 +374,6 @@
             box-shadow: 0 15px 40px rgba(218, 165, 32, 0.5);
         }
 
-        footer {
-            position: relative;
-            padding: 4rem 5% 2rem;
-            border-top: 1px solid rgba(218, 165, 32, 0.2);
-            z-index: 1;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-brand h3 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #DAA520, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-        }
-
-        .footer-brand p {
-            color: #666;
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-col h4 {
-            color: #fff;
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: #666;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-size: 0.95rem;
-        }
-
-        .footer-links a:hover {
-            color: #DAA520;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(218, 165, 32, 0.1);
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(218, 165, 32, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: rgba(218, 165, 32, 0.1);
-            border-color: #DAA520;
-            color: #DAA520;
-        }
-
         @media (max-width: 1024px) {
             .story-container {
                 grid-template-columns: 1fr;
@@ -633,14 +386,6 @@
             .section-title {
                 font-size: 2.5rem;
             }
-
-            .nav-center {
-                display: none;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-            }
         }
 
         @media (max-width: 768px) {
@@ -651,15 +396,17 @@
             .section-title {
                 font-size: 2rem;
             }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
     <div class="bg-animation"></div>
+
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
 
     <?php require_once 'includes/navigation.php'; ?>
 
@@ -839,24 +586,36 @@
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Virtual Advising</a></li>
-                    <li><a href="#">Student Success</a></li>
-                    <li><a href="#">Academic Planning</a></li>
-                    <li><a href="#">Career Services</a></li>
+                    <li><a href="solutions-virtual-advising.php">Virtual Advising</a></li>
+                    <li><a href="solutions-student-success.php">Student Success</a></li>
+                    <li><a href="solutions-academic-planning.php">Academic Planning</a></li>
+                    <li><a href="solutions-career-services.php">Career Services</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">Case Studies</a></li>
-                    <li><a href="#">Webinars</a></li>
-                    <li><a href="#">Help Center</a></li>
+                    <li><a href="documentation.php">Documentation</a></li>
+                    <li><a href="case-studies.php">Case Studies</a></li>
+                    <li><a href="webinars.php">Webinars</a></li>
+                    <li><a href="help-center.php">Help Center</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul class="footer-links">
                     <li><a href="about.php">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="solutions-career-services.php">Careers</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="privacy.php">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MashouraX. All rights reserved. Built with excellence for student success.</p>
+        </div>
+    </footer>
+
+    <script src="cookies-loader.js"></script>
+</body>
+</html>
