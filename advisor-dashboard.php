@@ -13,24 +13,8 @@ if ($user['role'] !== 'advisor') {
     exit();
 }
 
-$pdo      = getDBConnection();
+$pdo       = getDBConnection();
 $advisorId = $user['id'];
-
-// Handle status change (Active / At Risk)
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id'], $_POST['status'])) {
-    $studentId = (int) $_POST['student_id'];
-    $status    = $_POST['status'] === 'at_risk' ? 'at_risk' : 'active';
-
-    $stmt = $pdo->prepare("
-        UPDATE users
-        SET student_status = :status
-        WHERE id = :id AND role = 'student'
-    ");
-    $stmt->execute([
-        ':status' => $status,
-        ':id'     => $studentId,
-    ]);
-}
 
 try {
     // Assigned students for this advisor
@@ -60,33 +44,36 @@ try {
         WHERE role = 'student' AND COALESCE(student_status,'active') = 'active'
     ");
     $activeCountStmt->execute();
-    $activeCount = (int) $activeCountStmt->fetchColumn();
+    $activeCount = (int)$activeCountStmt->fetchColumn();
 
     $atRiskCountStmt = $pdo->prepare("
         SELECT COUNT(*) FROM users
         WHERE role = 'student' AND student_status = 'at_risk'
     ");
     $atRiskCountStmt->execute();
-    $atRiskCount = (int) $atRiskCountStmt->fetchColumn();
+    $atRiskCount = (int)$atRiskCountStmt->fetchColumn();
 
     // Upcoming meetings for this advisor
     $meetingsStmt = $pdo->prepare("
-        SELECT m.id,
-               m.scheduled_at,
-               m.duration,
-               m.type,
-               m.status,
-               s.first_name,
-               s.last_name
-        FROM meetings m
-        JOIN users s ON m.student_id = s.id
-        WHERE m.advisor_id = :advisor_id
-          AND m.scheduled_at >= NOW()
-        ORDER BY m.scheduled_at ASC
-        LIMIT 20
-    ");
-    $meetingsStmt->execute([':advisor_id' => $advisorId]);
-    $upcomingMeetings = $meetingsStmt->fetchAll(PDO::FETCH_ASSOC);
+    SELECT m.id,
+           m.scheduled_at,
+           m.duration,
+           m.type,
+           m.status,
+           s.first_name,
+           s.last_name
+    FROM meetings m
+    JOIN users s ON m.student_id = s.id
+    WHERE m.advisor_id = :advisor_id
+      AND m.scheduled_at >= NOW()
+    ORDER BY m.scheduled_at ASC
+    LIMIT 20
+");
+
+
+$meetingsStmt->execute([':advisor_id' => $advisorId]);
+$upcomingMeetings = $meetingsStmt->fetchAll(PDO::FETCH_ASSOC);
+
 
     $today = date('Y-m-d');
 
@@ -97,7 +84,7 @@ try {
           AND status IN ('scheduled','confirmed')
     ");
     $meetingsTodayStmt->execute([':advisor_id' => $advisorId, ':today' => $today]);
-    $meetingsToday = (int) $meetingsTodayStmt->fetchColumn();
+    $meetingsToday = (int)$meetingsTodayStmt->fetchColumn();
 
     $meetingsWeekStmt = $pdo->prepare("
         SELECT COUNT(*) FROM meetings
@@ -106,10 +93,10 @@ try {
           AND status IN ('scheduled','confirmed','completed')
     ");
     $meetingsWeekStmt->execute([':advisor_id' => $advisorId]);
-    $meetingsWeek = (int) $meetingsWeekStmt->fetchColumn();
+    $meetingsWeek = (int)$meetingsWeekStmt->fetchColumn();
 
     $advisorStats = [
-        'total_students'    => (int) $totalStudents,
+        'total_students'    => (int)$totalStudents,
         'assigned_students' => count($assignedStudents),
         'active_students'   => $activeCount,
         'at_risk_students'  => $atRiskCount,
@@ -323,28 +310,6 @@ try {
             font-size: 14px;
             font-weight: 500;
         }
-        .status-form {
-            margin-top: 10px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .status-form button {
-            border: none;
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .btn-active {
-            background: #4CAF50;
-            color: #fff;
-        }
-        .btn-risk {
-            background: #f44336;
-            color: #fff;
-        }
         .meeting-item {
             display: flex;
             align-items: center;
@@ -394,10 +359,6 @@ try {
             background: rgba(76, 175, 80, 0.2);
             color: #4CAF50;
         }
-        .status-pending {
-            background: rgba(255, 152, 0, 0.2);
-            color: #FF9800;
-        }
         .status-completed {
             background: rgba(33, 150, 243, 0.2);
             color: #2196F3;
@@ -405,6 +366,10 @@ try {
         .status-cancelled {
             background: rgba(244, 67, 54, 0.2);
             color: #f44336;
+        }
+        .status-rescheduled {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
         }
         @media (max-width: 768px) {
             .dashboard-header {
@@ -513,16 +478,6 @@ try {
                         </div>
                     </div>
                 </div>
-
-                <form method="post" class="status-form">
-                    <input type="hidden" name="student_id" value="<?php echo (int)$s['id']; ?>">
-                    <button type="submit" name="status" value="active" class="btn-active">
-                        Mark Active
-                    </button>
-                    <button type="submit" name="status" value="at_risk" class="btn-risk">
-                        Mark At Risk
-                    </button>
-                </form>
             </div>
         <?php endforeach; ?>
     </div>
@@ -540,10 +495,10 @@ try {
 
         <?php foreach ($upcomingMeetings as $meeting): ?>
             <div class="meeting-item">
-                <div class="meeting-time">
-                    <?php echo date('M j', strtotime($meeting['scheduled_at'])); ?><br>
-                    <?php echo date('H:i', strtotime($meeting['scheduled_at'])); ?>
-                </div>
+            <div class="meeting-time">
+            <?php echo date('M j', strtotime($meeting['scheduledat'])); ?><br>
+            <?php echo date('H:i', strtotime($meeting['scheduledat'])); ?>
+        </div>
                 <div class="meeting-content">
                     <h4 class="meeting-student">
                         <?php echo htmlspecialchars($meeting['first_name'].' '.$meeting['last_name']); ?>

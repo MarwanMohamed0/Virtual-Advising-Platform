@@ -30,18 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$errors) {
         $stmt = $pdo->prepare("
-            INSERT INTO meetings
-            (advisor_id, student_id, scheduled_at, duration, type, status, notes)
-            VALUES (:advisor_id, :student_id, :scheduled_at, :duration, :type, 'scheduled', :notes)
-        ");
-        $stmt->execute([
-            ':advisor_id'   => $advisorId,
-            ':student_id'   => $studentId,
-            ':scheduled_at' => $scheduledAt,
-            ':duration'     => $duration,
-            ':type'         => $type,
-            ':notes'        => $notes,
-        ]);
+    INSERT INTO meetings
+    (advisor_id, student_id, scheduled_at, duration, type, status, notes)
+    VALUES (:advisor_id, :student_id, :scheduled_at, :duration, :type, 'scheduled', :notes)
+");
+$stmt->execute([
+    ':advisor_id'   => $advisorId,
+    ':student_id'   => $studentId,
+    ':scheduled_at' => $scheduledAt,
+    ':duration'     => $duration,
+    ':type'         => $type,
+    ':notes'        => $notes,
+]);
+
+    
         $success = 'Meeting scheduled successfully.';
     }
 }
