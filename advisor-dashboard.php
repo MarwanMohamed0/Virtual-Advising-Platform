@@ -531,7 +531,7 @@ try {
     <div class="dashboard-section">
         <div class="section-header">
             <h2 class="section-title">Upcoming Meetings</h2>
-            <a href="#" class="section-action">Schedule Meeting</a>
+            <a href="schedule_meeting.php" class="section-action">Schedule Meeting</a>
         </div>
 
         <?php if (!$upcomingMeetings): ?>
