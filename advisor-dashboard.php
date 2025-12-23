@@ -36,7 +36,7 @@ try {
     $assignedStmt->execute([':advisor_id' => $advisorId]);
     $assignedStudents = $assignedStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Counts
+    // Stats
     $totalStudents = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'student'")->fetchColumn();
 
     $activeCountStmt = $pdo->prepare("
@@ -55,26 +55,24 @@ try {
 
     // Upcoming meetings for this advisor
     $meetingsStmt = $pdo->prepare("
-    SELECT m.id,
-           m.scheduled_at,
-           m.duration,
-           m.type,
-           m.status,
-           s.first_name,
-           s.last_name
-    FROM meetings m
-    JOIN users s ON m.student_id = s.id
-    WHERE m.advisor_id = :advisor_id
-      AND m.scheduled_at >= NOW()
-    ORDER BY m.scheduled_at ASC
-    LIMIT 20
-");
+        SELECT m.id,
+               m.scheduled_at,
+               m.duration,
+               m.type,
+               m.status,
+               s.first_name,
+               s.last_name
+        FROM meetings m
+        JOIN users s ON m.student_id = s.id
+        WHERE m.advisor_id = :advisor_id
+          AND m.scheduled_at >= NOW()
+        ORDER BY m.scheduled_at ASC
+        LIMIT 20
+    ");
+    $meetingsStmt->execute([':advisor_id' => $advisorId]);
+    $upcomingMeetings = $meetingsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-$meetingsStmt->execute([':advisor_id' => $advisorId]);
-$upcomingMeetings = $meetingsStmt->fetchAll(PDO::FETCH_ASSOC);
-
-
+    // Meeting stats
     $today = date('Y-m-d');
 
     $meetingsTodayStmt = $pdo->prepare("
@@ -173,7 +171,7 @@ $upcomingMeetings = $meetingsStmt->fetchAll(PDO::FETCH_ASSOC);
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 30px;
             margin-bottom: 40px;
         }
@@ -495,10 +493,10 @@ $upcomingMeetings = $meetingsStmt->fetchAll(PDO::FETCH_ASSOC);
 
         <?php foreach ($upcomingMeetings as $meeting): ?>
             <div class="meeting-item">
-            <div class="meeting-time">
-            <?php echo date('M j', strtotime($meeting['scheduledat'])); ?><br>
-            <?php echo date('H:i', strtotime($meeting['scheduledat'])); ?>
-        </div>
+                <div class="meeting-time">
+                    <?php echo date('M j', strtotime($meeting['scheduled_at'])); ?><br>
+                    <?php echo date('H:i', strtotime($meeting['scheduled_at'])); ?>
+                </div>
                 <div class="meeting-content">
                     <h4 class="meeting-student">
                         <?php echo htmlspecialchars($meeting['first_name'].' '.$meeting['last_name']); ?>
