@@ -1,0 +1,37 @@
+<?php
+/**
+ * API Configuration Example
+ * 
+ * Copy this file to api.php and add your actual API keys
+ * 
+ * IMPORTANT: Never commit api.php to version control!
+ */
+
+// Google Gemini API Configuration
+define('GEMINI_API_KEY', 'YOUR_GEMINI_API_KEY_HERE'); // Get your key from https://makersuite.google.com/app/apikey
+define('GEMINI_API_URL', 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent');
+define('GEMINI_MODEL', 'gemini-pro'); // You can change to 'gemini-pro-vision' for image support
+
+// API Settings
+define('GEMINI_MAX_TOKENS', 1000);
+define('GEMINI_TEMPERATURE', 0.7); // 0.0 to 1.0 - Controls randomness (0.7 is balanced)
+define('GEMINI_TOP_P', 0.9);
+define('GEMINI_TOP_K', 40);
+
+/**
+ * Check if Gemini API is configured
+ * @return bool True if API key is set, false otherwise
+ */
+function isGeminiConfigured() {
+    return !empty(GEMINI_API_KEY) && GEMINI_API_KEY !== 'YOUR_GEMINI_API_KEY_HERE';
+}
+
+/**
+ * Get Gemini API key
+ * @return string API key or empty string if not configured
+ */
+function getGeminiApiKey() {
+    return GEMINI_API_KEY;
+}
+?>
+
