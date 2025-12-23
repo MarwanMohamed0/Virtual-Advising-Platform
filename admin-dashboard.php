@@ -408,10 +408,13 @@ try {
 
         <!-- Recent Users Section -->
         <div class="dashboard-section">
-            <div class="section-header">
-                <h2 class="section-title">Recent Users</h2>
-                <a href="#" class="section-action">View All Users</a>
-            </div>
+    <h2 class="section-title" style="margin-bottom: 30px;">Quick Actions</h2>
+    <div class="quick-actions">
+        <div class="action-card" onclick="window.location.href='manage_users.php'">
+            <div class="action-icon">👥</div>
+            <h3 class="action-title">Manage Users</h3>
+            <p class="action-desc">Add, edit, or remove user accounts</p>
+        </div>
             <table class="data-table">
                 <thead>
                     <tr>

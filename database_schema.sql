@@ -2,7 +2,6 @@
 -- Create database
 CREATE DATABASE IF NOT EXISTS mashourax_platform;
 USE mashourax_platform;
-
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,7 +22,6 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_role (role),
     INDEX idx_created_at (created_at)
 );
-
 -- Sessions table for managing user sessions
 CREATE TABLE IF NOT EXISTS user_sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,9 +50,10 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
     INDEX idx_user_id (user_id),
     INDEX idx_expires_at (expires_at)
 );
-
 -- Insert a default admin user (password: admin123)
--- Note: In production, change this password immediately
+
 INSERT INTO users (first_name, last_name, email, password_hash, institution, role, email_verified, is_active) 
 VALUES ('Admin', 'User', 'admin@mashourax.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'MashouraX Platform', 'admin', TRUE, TRUE)
 ON DUPLICATE KEY UPDATE email = email;
+
+

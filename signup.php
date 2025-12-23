@@ -23,11 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
     
     $result = registerUser($userData);
-    
+
     if ($result['success']) {
-        $successMessage = $result['message'];
-        
-        // Verify what was actually saved
+    
+        // Optional: verify saved user while debugging
         try {
             $pdo = getDBConnection();
             $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
@@ -37,10 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             $debugInfo['database_error'] = $e->getMessage();
         }
+    
+        // Redirect to homepage after successful signup
+        header("Location: index.php");
+        exit;
+    
     } else {
         $errorMessage = $result['message'];
     }
-}
+}    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -106,64 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
             
-            <!-- Debug Information -->
-            <?php if (isset($debugInfo)): ?>
-                <div class="debug-info" style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin: 20px 0; font-family: monospace; font-size: 12px;">
-                    <h4 style="margin: 0 0 10px 0; color: #495057;">🔍 Debug Information:</h4>
-                    
-                    <div style="margin-bottom: 10px;">
-                        <strong>Role Selected:</strong> 
-                        <span style="color: <?php echo $debugInfo['role_selected'] === 'advisor' ? 'blue' : ($debugInfo['role_selected'] === 'admin' ? 'red' : 'green'); ?>; font-weight: bold;">
-                            <?php echo strtoupper($debugInfo['role_selected']); ?>
-                        </span>
-                        <?php if ($debugInfo['role_validation']): ?>
-                            <span style="color: green;">✅ Valid</span>
-                        <?php else: ?>
-                            <span style="color: red;">❌ Invalid</span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div style="margin-bottom: 10px;">
-                        <strong>Processed Data:</strong>
-                        <pre style="background: white; padding: 8px; border-radius: 4px; margin: 5px 0; overflow-x: auto;"><?php print_r($debugInfo['processed_data']); ?></pre>
-                    </div>
-                    
-                    <?php if (isset($debugInfo['saved_user'])): ?>
-                        <div style="margin-bottom: 10px;">
-                            <strong>Saved in Database:</strong>
-                            <div style="background: white; padding: 8px; border-radius: 4px; margin: 5px 0;">
-                                <strong>Role:</strong> 
-                                <span style="color: <?php echo $debugInfo['saved_user']['role'] === 'admin' ? 'red' : ($debugInfo['saved_user']['role'] === 'advisor' ? 'blue' : 'green'); ?>; font-weight: bold;">
-                                    <?php echo strtoupper($debugInfo['saved_user']['role']); ?>
-                                </span>
-                                <?php if ($debugInfo['saved_user']['role'] === $debugInfo['processed_data']['role']): ?>
-                                    <span style="color: green;">✅ Match</span>
-                                <?php else: ?>
-                                    <span style="color: red;">❌ Mismatch!</span>
-                                <?php endif; ?>
-                                <br>
-                                <strong>Email:</strong> <?php echo htmlspecialchars($debugInfo['saved_user']['email']); ?><br>
-                                <strong>Name:</strong> <?php echo htmlspecialchars($debugInfo['saved_user']['first_name'] . ' ' . $debugInfo['saved_user']['last_name']); ?><br>
-                                <strong>Institution:</strong> <?php echo htmlspecialchars($debugInfo['saved_user']['institution']); ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <?php if (isset($debugInfo['database_error'])): ?>
-                        <div style="color: red;">
-                            <strong>Database Error:</strong> <?php echo htmlspecialchars($debugInfo['database_error']); ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #dee2e6;">
-                        <small style="color: #6c757d;">
-                            This debug information will help identify role selection issues. 
-                            <a href="fix_user_roles.php" target="_blank" style="color: #007bff;">Fix User Roles</a> | 
-                            <a href="test_advisor_dashboard.php" target="_blank" style="color: #007bff;">Test Dashboard</a>
-                        </small>
-                    </div>
-                </div>
-            <?php endif; ?>
+            
 
             <form id="signupForm" method="POST" action="">
                 <div class="form-row">
@@ -211,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </label>
                 </div>
 
-                <button type="submit" class="signup-btn">Create Account</button>
+                <button type="submit" class="signup-btn" href="index.php">Create Account</button>
             </form>
 
             <div class="divider">
