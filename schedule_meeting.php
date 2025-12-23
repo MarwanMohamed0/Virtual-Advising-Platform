@@ -48,16 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // load assigned students for this advisor
 $studentsStmt = $pdo->prepare("
-    SELECT s.id, s.first_name, s.last_name
-    FROM advisor_student_assignments asa
-    JOIN users s ON asa.student_id = s.id
-    WHERE asa.advisor_id = :advisor_id
-      AND asa.is_active = 1
-      AND s.role = 'student'
-    ORDER BY s.first_name, s.last_name
+    SELECT id, first_name, last_name
+    FROM users
+    WHERE role = 'student'
+    ORDER BY first_name, last_name
 ");
-$studentsStmt->execute([':advisor_id' => $advisorId]);
+$studentsStmt->execute();
 $students = $studentsStmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
