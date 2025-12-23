@@ -13,7 +13,8 @@ if ($user['role'] !== 'advisor') {
     exit();
 }
 
-$pdo = getDBConnection();
+$pdo      = getDBConnection();
+$advisorId = $user['id'];
 
 // Handle status change (Active / At Risk)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id'], $_POST['status'])) {
@@ -31,55 +32,97 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id'], $_POST[
     ]);
 }
 
-// Load advisor statistics and real students
 try {
-    // Total students in system
+    // Assigned students for this advisor
+    $assignedStmt = $pdo->prepare("
+        SELECT s.id,
+               s.first_name,
+               s.last_name,
+               s.email,
+               s.institution,
+               COALESCE(s.student_status,'active') AS student_status,
+               s.created_at
+        FROM advisor_student_assignments asa
+        JOIN users s ON asa.student_id = s.id
+        WHERE asa.advisor_id = :advisor_id
+          AND asa.is_active = 1
+          AND s.role = 'student'
+        ORDER BY s.created_at DESC
+    ");
+    $assignedStmt->execute([':advisor_id' => $advisorId]);
+    $assignedStudents = $assignedStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Counts
     $totalStudents = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'student'")->fetchColumn();
 
-    // Real assigned students for this advisor.
-    // For now, treat all students as 'assigned' to this advisor.
-    $studentsStmt = $pdo->query("
-        SELECT id, first_name, last_name, email, institution,
-               COALESCE(student_status, 'active') AS student_status,
-               created_at
-        FROM users
-        WHERE role = 'student'
-        ORDER BY created_at DESC
-        LIMIT 50
-    ");
-    $assignedStudents = $studentsStmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Basic stats using real data
-    $activeCount = $pdo->query("
+    $activeCountStmt = $pdo->prepare("
         SELECT COUNT(*) FROM users
         WHERE role = 'student' AND COALESCE(student_status,'active') = 'active'
-    ")->fetchColumn();
+    ");
+    $activeCountStmt->execute();
+    $activeCount = (int) $activeCountStmt->fetchColumn();
 
-    $atRiskCount = $pdo->query("
+    $atRiskCountStmt = $pdo->prepare("
         SELECT COUNT(*) FROM users
         WHERE role = 'student' AND student_status = 'at_risk'
-    ")->fetchColumn();
+    ");
+    $atRiskCountStmt->execute();
+    $atRiskCount = (int) $atRiskCountStmt->fetchColumn();
+
+    // Upcoming meetings for this advisor
+    $meetingsStmt = $pdo->prepare("
+        SELECT m.id,
+               m.scheduled_at,
+               m.duration,
+               m.type,
+               m.status,
+               s.first_name,
+               s.last_name
+        FROM meetings m
+        JOIN users s ON m.student_id = s.id
+        WHERE m.advisor_id = :advisor_id
+          AND m.scheduled_at >= NOW()
+        ORDER BY m.scheduled_at ASC
+        LIMIT 20
+    ");
+    $meetingsStmt->execute([':advisor_id' => $advisorId]);
+    $upcomingMeetings = $meetingsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $today = date('Y-m-d');
+
+    $meetingsTodayStmt = $pdo->prepare("
+        SELECT COUNT(*) FROM meetings
+        WHERE advisor_id = :advisor_id
+          AND DATE(scheduled_at) = :today
+          AND status IN ('scheduled','confirmed')
+    ");
+    $meetingsTodayStmt->execute([':advisor_id' => $advisorId, ':today' => $today]);
+    $meetingsToday = (int) $meetingsTodayStmt->fetchColumn();
+
+    $meetingsWeekStmt = $pdo->prepare("
+        SELECT COUNT(*) FROM meetings
+        WHERE advisor_id = :advisor_id
+          AND scheduled_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+          AND status IN ('scheduled','confirmed','completed')
+    ");
+    $meetingsWeekStmt->execute([':advisor_id' => $advisorId]);
+    $meetingsWeek = (int) $meetingsWeekStmt->fetchColumn();
 
     $advisorStats = [
-        'total_students'    => $totalStudents,
+        'total_students'    => (int) $totalStudents,
         'assigned_students' => count($assignedStudents),
         'active_students'   => $activeCount,
         'at_risk_students'  => $atRiskCount,
-        // keep simple placeholders for meetings until you wire real tables
-        'meetings_today'    => 0,
-        'meetings_week'     => 0,
+        'meetings_today'    => $meetingsToday,
+        'meetings_week'     => $meetingsWeek,
         'pending_requests'  => 0,
         'urgent_cases'      => $atRiskCount,
     ];
-
-    // For now keep meetings mocked or empty
-    $upcomingMeetings = [];
-
 } catch (Exception $e) {
     error_log("Advisor dashboard error: " . $e->getMessage());
-    $advisorStats      = [];
-    $assignedStudents  = [];
-    $upcomingMeetings  = [];
+    $advisorStats     = [];
+    $assignedStudents = [];
+    $upcomingMeetings = [];
 }
 ?>
 <!DOCTYPE html>
@@ -126,6 +169,18 @@ try {
             justify-content: center;
             color: white;
             font-weight: bold;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover {
+            background: #c82333;
         }
         .dashboard-grid {
             max-width: 1400px;
@@ -290,17 +345,66 @@ try {
             background: #f44336;
             color: #fff;
         }
-        .logout-btn {
-            background: #dc3545;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
+        .meeting-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .logout-btn:hover {
-            background: #c82333;
+        .meeting-item:last-child {
+            border-bottom: none;
+        }
+        .meeting-time {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 90px;
+            text-align: center;
+        }
+        .meeting-content {
+            flex: 1;
+        }
+        .meeting-student {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+        }
+        .meeting-type {
+            color: #aaa;
+            font-size: 14px;
+            margin: 0 0 5px 0;
+        }
+        .meeting-duration {
+            color: #666;
+            font-size: 12px;
+        }
+        .meeting-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-scheduled,
+        .status-confirmed {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        .status-pending {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+        .status-completed {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+        }
+        .status-cancelled {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
         }
         @media (max-width: 768px) {
             .dashboard-header {
@@ -330,7 +434,7 @@ try {
         </div>
     </div>
 
-    <!-- Stats -->
+    <!-- Statistics -->
     <div class="dashboard-grid">
         <div class="stat-card">
             <div class="stat-header">
@@ -347,21 +451,21 @@ try {
                 <div class="stat-icon" style="background:rgba(33,150,243,0.2);color:#2196F3;">🎓</div>
             </div>
             <p class="stat-value"><?php echo number_format($advisorStats['assigned_students'] ?? 0); ?></p>
-            <p class="stat-subtitle">Currently listed below</p>
+            <p class="stat-subtitle">Linked to you</p>
         </div>
 
         <div class="stat-card">
             <div class="stat-header">
-                <h3 class="stat-title">Active</h3>
-                <div class="stat-icon" style="background:rgba(76,175,80,0.2);color:#4CAF50;">✅</div>
+                <h3 class="stat-title">Meetings Today</h3>
+                <div class="stat-icon" style="background:rgba(255,152,0,0.2);color:#FF9800;">📅</div>
             </div>
-            <p class="stat-value"><?php echo number_format($advisorStats['active_students'] ?? 0); ?></p>
-            <p class="stat-subtitle">Good standing</p>
+            <p class="stat-value"><?php echo number_format($advisorStats['meetings_today'] ?? 0); ?></p>
+            <p class="stat-subtitle">Scheduled today</p>
         </div>
 
         <div class="stat-card">
             <div class="stat-header">
-                <h3 class="stat-title">At Risk</h3>
+                <h3 class="stat-title">At Risk Students</h3>
                 <div class="stat-icon" style="background:rgba(244,67,54,0.2);color:#f44336;">⚠️</div>
             </div>
             <p class="stat-value"><?php echo number_format($advisorStats['at_risk_students'] ?? 0); ?></p>
@@ -369,17 +473,17 @@ try {
         </div>
     </div>
 
-    <!-- Assigned Students (real data) -->
+    <!-- Assigned Students -->
     <div class="dashboard-section">
         <div class="section-header">
             <h2 class="section-title">Assigned Students</h2>
             <span style="color:#aaa;font-size:14px;">
-                Showing latest <?php echo count($assignedStudents); ?> students
+                Showing <?php echo count($assignedStudents); ?> students
             </span>
         </div>
 
         <?php if (!$assignedStudents): ?>
-            <p style="color:#aaa;">No students found yet.</p>
+            <p style="color:#aaa;">No students assigned yet.</p>
         <?php endif; ?>
 
         <?php foreach ($assignedStudents as $s): ?>
@@ -410,7 +514,6 @@ try {
                     </div>
                 </div>
 
-                <!-- Status controls -->
                 <form method="post" class="status-form">
                     <input type="hidden" name="student_id" value="<?php echo (int)$s['id']; ?>">
                     <button type="submit" name="status" value="active" class="btn-active">
@@ -424,8 +527,36 @@ try {
         <?php endforeach; ?>
     </div>
 
-    <!-- You can later add Upcoming Meetings + Quick Actions again here -->
+    <!-- Upcoming Meetings -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h2 class="section-title">Upcoming Meetings</h2>
+            <a href="#" class="section-action">Schedule Meeting</a>
+        </div>
 
+        <?php if (!$upcomingMeetings): ?>
+            <p style="color:#aaa;">No upcoming meetings scheduled.</p>
+        <?php endif; ?>
+
+        <?php foreach ($upcomingMeetings as $meeting): ?>
+            <div class="meeting-item">
+                <div class="meeting-time">
+                    <?php echo date('M j', strtotime($meeting['scheduled_at'])); ?><br>
+                    <?php echo date('H:i', strtotime($meeting['scheduled_at'])); ?>
+                </div>
+                <div class="meeting-content">
+                    <h4 class="meeting-student">
+                        <?php echo htmlspecialchars($meeting['first_name'].' '.$meeting['last_name']); ?>
+                    </h4>
+                    <p class="meeting-type"><?php echo htmlspecialchars($meeting['type']); ?></p>
+                    <p class="meeting-duration"><?php echo (int)$meeting['duration']; ?> minutes</p>
+                </div>
+                <span class="meeting-status status-<?php echo $meeting['status']; ?>">
+                    <?php echo ucfirst($meeting['status']); ?>
+                </span>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>
 </body>
 </html>
